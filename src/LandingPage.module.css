@@ -316,6 +316,149 @@
   padding: 2px 7px;
 }
 
+/* ── Remove button on card ── */
+.removeBtn {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: rgba(245, 240, 232, 0.06);
+  border: 1px solid rgba(245, 240, 232, 0.12);
+  color: rgba(245, 240, 232, 0.3);
+  font-size: 10px; line-height: 1;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0;
+  transition: all 0.2s;
+  z-index: 2;
+}
+.card:hover .removeBtn {
+  opacity: 1;
+}
+.removeBtn:hover {
+  background: rgba(139, 31, 47, 0.25);
+  border-color: rgba(139, 31, 47, 0.5);
+  color: #e05c6e;
+}
+
+/* ── Add Studio card ── */
+.addCard {
+  border: 2px dashed rgba(245, 240, 232, 0.12);
+  border-radius: 6px;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.25s;
+  min-height: 180px;
+}
+.addCard:hover {
+  border-color: rgba(201, 168, 76, 0.4);
+  background: rgba(201, 168, 76, 0.04);
+}
+.addCardIcon {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 2px dashed rgba(201, 168, 76, 0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; color: rgba(201, 168, 76, 0.5);
+  transition: all 0.25s;
+}
+.addCard:hover .addCardIcon {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(201, 168, 76, 0.08);
+}
+.addCardName {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px; font-weight: 700;
+  color: rgba(245, 240, 232, 0.4);
+  transition: color 0.25s;
+}
+.addCard:hover .addCardName { color: var(--gold); }
+.addCardSub {
+  font-size: 11px; color: rgba(138, 155, 176, 0.5);
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+
+/* ── Add Studio Modal ── */
+.modalOverlay {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.addModal {
+  width: 100%; max-width: 480px;
+  background: #141414;
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+}
+.addModalHeader {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(245, 240, 232, 0.08);
+}
+.addModalTitle {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700;
+  color: var(--cream);
+}
+.addModalClose {
+  background: none; border: none;
+  color: var(--mist); font-size: 16px;
+  cursor: pointer; padding: 4px 8px;
+  transition: color 0.2s;
+}
+.addModalClose:hover { color: var(--cream); }
+.addModalSub {
+  padding: 14px 24px 4px;
+  font-size: 13px; color: var(--mist);
+}
+.addModalList {
+  padding: 8px 16px 20px;
+  display: flex; flex-direction: column; gap: 8px;
+  max-height: 60vh; overflow-y: auto;
+}
+.addModalItem {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px;
+  border: 1px solid rgba(245, 240, 232, 0.07);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: rgba(245, 240, 232, 0.02);
+}
+.addModalItem:hover {
+  border-color: var(--accent, var(--gold));
+  background: rgba(245, 240, 232, 0.05);
+}
+.addModalIcon { font-size: 26px; flex-shrink: 0; }
+.addModalInfo { flex: 1; }
+.addModalName {
+  font-size: 15px; font-weight: 600;
+  color: var(--cream); margin-bottom: 2px;
+}
+.addModalSub2 {
+  font-size: 11px; letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent, var(--gold)); opacity: 0.7;
+}
+.addModalPlus {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--gold); opacity: 0;
+  transition: opacity 0.2s;
+}
+.addModalItem:hover .addModalPlus { opacity: 1; }
+
 /* ── Buttons ── */
 .enterBtn {
   margin-top: 8px;

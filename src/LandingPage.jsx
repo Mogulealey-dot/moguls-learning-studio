@@ -4,6 +4,7 @@ import ProfilePage from './components/ProfilePage'
 import ThemeToggle from './components/ThemeToggle'
 import GlobalSearch from './components/GlobalSearch'
 import StudyRoom from './components/StudyRoom'
+import { useUserData } from './hooks/useUserData'
 
 const STUDIOS = [
   {
@@ -88,11 +89,50 @@ const STUDIOS = [
   },
 ]
 
+function AddStudioModal({ hidden, onRestore, onClose }) {
+  return (
+    <div className={styles.modalOverlay} onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div className={styles.addModal}>
+        <div className={styles.addModalHeader}>
+          <h3 className={styles.addModalTitle}>Restore a Studio</h3>
+          <button className={styles.addModalClose} onClick={onClose}>✕</button>
+        </div>
+        <p className={styles.addModalSub}>Select a studio to add back to your dashboard.</p>
+        <div className={styles.addModalList}>
+          {hidden.map((s) => (
+            <div
+              key={s.id}
+              className={styles.addModalItem}
+              style={{ '--accent': s.color }}
+              onClick={() => { onRestore(s.id); onClose() }}
+            >
+              <span className={styles.addModalIcon}>{s.icon}</span>
+              <div className={styles.addModalInfo}>
+                <div className={styles.addModalName}>{s.name}</div>
+                <div className={styles.addModalSub2}>{s.subtitle}</div>
+              </div>
+              <span className={styles.addModalPlus}>+ Add</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function LandingPage({ user, onLogout, onEnterStudio }) {
   const firstName = user?.name?.split(' ')[0] || 'Scholar'
   const [showProfile, setShowProfile] = useState(false)
   const [showSearch, setShowSearch] = useState(false)
   const [showRoom, setShowRoom] = useState(false)
+  const [showAddModal, setShowAddModal] = useState(false)
+  const [hiddenStudios, setHiddenStudios] = useUserData('mls_hidden_studios', [])
+
+  const visibleStudios = STUDIOS.filter((s) => !hiddenStudios.includes(s.id))
+  const hiddenList = STUDIOS.filter((s) => hiddenStudios.includes(s.id))
+
+  const hideStudio = (id) => setHiddenStudios((prev) => [...prev, id])
+  const restoreStudio = (id) => setHiddenStudios((prev) => prev.filter((hid) => hid !== id))
 
   useEffect(() => {
     const handler = (e) => {
@@ -110,6 +150,14 @@ export default function LandingPage({ user, onLogout, onEnterStudio }) {
       {showProfile && <ProfilePage user={user} onClose={() => setShowProfile(false)} onLogout={onLogout} />}
       {showSearch && <GlobalSearch open={showSearch} onClose={() => setShowSearch(false)} />}
       {showRoom && <StudyRoom onClose={() => setShowRoom(false)} />}
+      {showAddModal && (
+        <AddStudioModal
+          hidden={hiddenList}
+          onRestore={restoreStudio}
+          onClose={() => setShowAddModal(false)}
+        />
+      )}
+
       {/* ── Header ── */}
       <header className={styles.header}>
         <div className={styles.brand}>
@@ -149,12 +197,21 @@ export default function LandingPage({ user, onLogout, onEnterStudio }) {
       {/* ── Studio Grid ── */}
       <section className={styles.gridSection}>
         <div className={styles.grid}>
-          {STUDIOS.map((s) => (
+          {visibleStudios.map((s) => (
             <div
               key={s.id}
               className={`${styles.card} ${s.status === 'active' ? styles.cardActive : styles.cardSoon}`}
               style={{ '--accent': s.color }}
             >
+              {/* Remove button */}
+              <button
+                className={styles.removeBtn}
+                onClick={(e) => { e.stopPropagation(); hideStudio(s.id) }}
+                title="Remove from dashboard"
+              >
+                ✕
+              </button>
+
               {s.status === 'soon' && (
                 <div className={styles.soonBadge}>Coming Soon</div>
               )}
@@ -186,6 +243,15 @@ export default function LandingPage({ user, onLogout, onEnterStudio }) {
               )}
             </div>
           ))}
+
+          {/* Add Studio card — only shown when studios are hidden */}
+          {hiddenList.length > 0 && (
+            <div className={styles.addCard} onClick={() => setShowAddModal(true)}>
+              <div className={styles.addCardIcon}>+</div>
+              <div className={styles.addCardName}>Add Studio</div>
+              <div className={styles.addCardSub}>{hiddenList.length} studio{hiddenList.length !== 1 ? 's' : ''} hidden</div>
+            </div>
+          )}
         </div>
       </section>
 
