@@ -1,0 +1,137 @@
+import { useState, useEffect } from 'react'
+import { LS, QUOTES } from '../utils'
+
+import GenericNavbar      from './GenericNavbar'
+import TaskTracker        from '../components/TaskTracker'
+import PomodoroTimer      from '../components/PomodoroTimer'
+import GradeCalculator    from '../components/GradeCalculator'
+import NotesApp           from '../components/NotesApp'
+import AIAssistant        from '../components/AIAssistant'
+import UploadCard         from '../components/UploadCard'
+import Footer             from '../components/Footer'
+
+import gs from './GenericStudio.module.css'
+
+function QuoteTicker() {
+  const [qi, setQi] = useState(0)
+  useEffect(() => {
+    const t = setInterval(() => setQi((i) => (i + 1) % QUOTES.length), 7000)
+    return () => clearInterval(t)
+  }, [])
+  return (
+    <div className={gs.quoteTicker}>
+      <span className={gs.quoteLabel}>Daily Wisdom</span>
+      <span className={gs.quoteText}>"{QUOTES[qi]}"</span>
+    </div>
+  )
+}
+
+function StatsRow({ prefix }) {
+  const noteCount  = LS.get(`${prefix}_notes`, []).length
+  const uploads    = LS.get(`${prefix}_upload_notes`, []).length
+  const taskCount  = LS.get(`${prefix}_tasks`, []).filter((t) => !t.done).length
+  const sessions   = LS.get(`${prefix}_pomodoro`, []).filter((s) => s.date === new Date().toLocaleDateString()).length
+  const stats = [
+    { n: noteCount,  label: 'Notes',          color: 'var(--accent, var(--gold))' },
+    { n: uploads,    label: 'Files',           color: 'var(--accent, var(--gold))' },
+    { n: taskCount,  label: 'Pending Tasks',   color: taskCount > 0 ? 'var(--crimson)' : 'var(--emerald-light)' },
+    { n: sessions,   label: 'Sessions Today 🍅', color: 'var(--emerald-light)' },
+  ]
+  return (
+    <div className={gs.statsRow}>
+      {stats.map((stat, i) => (
+        <div key={i} className={gs.statCard}>
+          <div className={gs.statNum} style={{ color: stat.color }}>{stat.n}</div>
+          <div className={gs.statLabel}>{stat.label}</div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function MaterialsSection({ prefix, studioName }) {
+  return (
+    <section id="materials" className="section">
+      <div className="section-header">
+        <p className="section-eyebrow">✦ Your Library</p>
+        <h2 className="section-title">Study <em>Materials</em></h2>
+        <div className="divider" />
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24 }}>
+        <UploadCard icon="📚" title="Class Notes"      desc={`Upload lecture notes, PDFs, and study guides for ${studioName}.`}  storageKey={`${prefix}_upload_notes`} />
+        <UploadCard icon="📝" title="Past Papers"      desc="Store past exam papers and practice questions to review from."        storageKey={`${prefix}_upload_papers`} />
+        <UploadCard icon="🏆" title="Results & Grades" desc="Keep track of grade reports, transcripts, and assignment scores."      storageKey={`${prefix}_upload_results`} />
+      </div>
+    </section>
+  )
+}
+
+export default function GenericStudio({ config, user, onLogout, onBack }) {
+  const [activeSection, setActiveSection] = useState('home')
+  const { ToolsComponent, storagePrefix, name, color, icon, heroTitle, heroSub, subjects, navLinks, aiSystemPrompt } = config
+
+  const scrollTo = (id) => {
+    const el = document.getElementById(id)
+    if (el) el.scrollIntoView({ behavior: 'smooth' })
+    setActiveSection(id)
+  }
+
+  return (
+    <div style={{ '--accent': color }}>
+      <GenericNavbar
+        user={user}
+        onLogout={onLogout}
+        onBack={onBack}
+        scrollTo={scrollTo}
+        activeSection={activeSection}
+        studioName={name}
+        navLinks={navLinks}
+      />
+
+      {/* ── Hero ── */}
+      <div id="home" className={gs.hero}>
+        <div className={gs.heroBg} />
+        <div className={gs.heroInner}>
+          <p className={gs.heroEyebrow}>
+            <span className={gs.heroIcon}>{icon}</span> {config.subtitle}
+          </p>
+          <h1 className={gs.heroTitle}>
+            {heroTitle[0]}<br /><em>{heroTitle[1]}</em>
+          </h1>
+          <p className={gs.heroSub}>{heroSub}</p>
+          <div className={gs.heroDivider} />
+        </div>
+      </div>
+
+      <QuoteTicker />
+      <StatsRow prefix={storagePrefix} />
+
+      {/* ── Studio Tools ── */}
+      <section id="tools" className="section">
+        <div className="section-header">
+          <p className="section-eyebrow">✦ Your Toolkit</p>
+          <h2 className="section-title">{name} <em>Tools</em></h2>
+          <div className="divider" />
+        </div>
+        <ToolsComponent storageKey={storagePrefix} />
+      </section>
+
+      <TaskTracker
+        storageKey={`${storagePrefix}_tasks`}
+        subjects={subjects}
+      />
+
+      <PomodoroTimer storageKey={`${storagePrefix}_pomodoro`} />
+
+      <GradeCalculator defaultSubjects={subjects.slice(0, 2)} />
+
+      <MaterialsSection prefix={storagePrefix} studioName={name} />
+
+      <NotesApp storageKey={`${storagePrefix}_notes`} />
+
+      <AIAssistant user={user} systemPrompt={aiSystemPrompt} />
+
+      <Footer />
+    </div>
+  )
+}

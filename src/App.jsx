@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { LS, QUOTES } from './utils'
 
-import AuthScreen          from './components/AuthScreen'
 import Navbar              from './components/Navbar'
 import HeroSlider          from './components/HeroSlider'
 import Clocks              from './components/Clocks'
@@ -72,20 +71,19 @@ function MaterialsSection() {
   )
 }
 
-export default function App() {
-  const [user, setUser]                   = useState(() => LS.get('mls_user', null))
+// Finance Studio — user, onLogout, and onBack are provided by Root
+export default function App({ user, onLogout, onBack }) {
   const [activeSection, setActiveSection] = useState('home')
-  const login  = (u) => { LS.set('mls_user', u); setUser(u) }
-  const logout = ()  => { LS.set('mls_user', null); setUser(null) }
+
   const scrollTo = (id) => {
     const el = document.getElementById(id)
     if (el) el.scrollIntoView({ behavior:'smooth' })
     setActiveSection(id)
   }
-  if (!user) return <AuthScreen onLogin={login} />
+
   return (
     <>
-      <Navbar user={user} onLogout={logout} scrollTo={scrollTo} activeSection={activeSection} />
+      <Navbar user={user} onLogout={onLogout} onBack={onBack} scrollTo={scrollTo} activeSection={activeSection} />
       <div id="home"><HeroSlider /></div>
       <QuoteTicker />
       <StatsRow />

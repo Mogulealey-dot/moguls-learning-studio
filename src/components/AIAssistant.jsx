@@ -2,7 +2,9 @@ import { useState, useEffect, useRef } from 'react'
 import { AI_CHIPS } from '../utils'
 import styles from './AIAssistant.module.css'
 
-export default function AIAssistant({ user }) {
+const DEFAULT_SYSTEM = `You are a helpful academic research assistant inside "Mogul's Learning Studio", a student's personal study website. Give clear, concise, well-structured answers. Use simple language when explaining concepts. When relevant, use examples. Keep responses focused and educational.`
+
+export default function AIAssistant({ user, systemPrompt }) {
   const firstName = user?.name?.split(' ')[0] || 'Scholar'
   const initials  = user?.name ? user.name[0].toUpperCase() : '?'
 
@@ -35,7 +37,7 @@ export default function AIAssistant({ user }) {
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
           max_tokens: 1000,
-          system: `You are a helpful academic research assistant inside "Mogul's Learning Studio", a student's personal study website. The student is studying MBA-level subjects including Advanced Financial Management. Give clear, concise, well-structured answers. Use simple language when explaining concepts. When relevant, use examples. Keep responses focused and educational.`,
+          system: systemPrompt || DEFAULT_SYSTEM,
           messages: history,
         }),
       })

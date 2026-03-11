@@ -3,7 +3,7 @@ import { LS } from '../utils'
 import styles from './TaskTracker.module.css'
 
 const PRIORITIES = ['High', 'Medium', 'Low']
-const SUBJECTS   = ['Advanced Financial Management', 'Marketing', 'Economics', 'Statistics', 'Management', 'Other']
+const SUBJECTS_DEFAULT = ['Advanced Financial Management', 'Marketing', 'Economics', 'Statistics', 'Management', 'Other']
 
 function priorityColor(p) {
   if (p === 'High')   return 'var(--crimson)'
@@ -16,8 +16,10 @@ function daysLeft(due) {
   return Math.ceil(diff / (1000 * 60 * 60 * 24))
 }
 
-export default function TaskTracker() {
-  const [tasks, setTasks]       = useState(() => LS.get('mls_tasks', []))
+export default function TaskTracker({ storageKey, subjects }) {
+  const key      = storageKey || 'mls_tasks'
+  const SUBJECTS = subjects || SUBJECTS_DEFAULT
+  const [tasks, setTasks]       = useState(() => LS.get(key, []))
   const [showForm, setShowForm] = useState(false)
   const [filter, setFilter]     = useState('all')
   const [form, setForm]         = useState({ title: '', subject: SUBJECTS[0], due: '', priority: 'Medium', notes: '' })
@@ -28,19 +30,19 @@ export default function TaskTracker() {
     if (!form.title || !form.due) return
     const t = { id: Date.now(), ...form, done: false, created: new Date().toLocaleDateString() }
     const updated = [t, ...tasks]
-    setTasks(updated); LS.set('mls_tasks', updated)
+    setTasks(updated); LS.set(key, updated)
     setForm({ title: '', subject: SUBJECTS[0], due: '', priority: 'Medium', notes: '' })
     setShowForm(false)
   }
 
   const toggle = (id) => {
     const updated = tasks.map((t) => t.id === id ? { ...t, done: !t.done } : t)
-    setTasks(updated); LS.set('mls_tasks', updated)
+    setTasks(updated); LS.set(key, updated)
   }
 
   const remove = (id) => {
     const updated = tasks.filter((t) => t.id !== id)
-    setTasks(updated); LS.set('mls_tasks', updated)
+    setTasks(updated); LS.set(key, updated)
   }
 
   const filtered = tasks.filter((t) => {
