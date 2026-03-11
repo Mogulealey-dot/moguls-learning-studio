@@ -67,18 +67,13 @@ const NAV_LINKS = [
   ['ai',         'AI ✦'],
 ]
 
-export default function Navbar({ user, onLogout, onBack, scrollTo, activeSection }) {
+export default function Navbar({ user, onLogout, scrollTo, activeSection }) {
+  const [mobileOpen, setMobileOpen] = useState(false)
+
   return (
     <nav className={styles.navbar}>
-      <div className={styles.left}>
-        {onBack && (
-          <button className={styles.backBtn} onClick={onBack} title="Back to all studios">
-            ‹ Studios
-          </button>
-        )}
-        <div className={styles.brand}>
-          <em>Finance</em> Studio
-        </div>
+      <div className={styles.brand}>
+        <em>Mogul's</em> Learning Studio
       </div>
 
       <ul className={styles.links}>

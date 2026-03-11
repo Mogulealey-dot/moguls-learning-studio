@@ -11,31 +11,20 @@ export default function AuthScreen({ onLogin }) {
 
   const handle = () => {
     setError('')
-
-    // Normalize — email trimmed + lowercased, name trimmed, password kept as-is
-    const email    = form.email.trim().toLowerCase()
-    const name     = form.name.trim()
-    const password = form.password
-
-    if (!email || !password) { setError('Please fill in all fields.'); return }
-    if (!email.includes('@') || !email.includes('.')) { setError('Please enter a valid email address.'); return }
-
-    // Load users safely — handles corrupted / missing storage
-    let users = {}
-    try { users = LS.get('mls_users', {}) || {} } catch { users = {} }
-
+    if (!form.email || !form.password) { setError('Please fill in all fields.'); return }
     if (tab === 'register') {
-      if (!name) { setError('Full name is required.'); return }
-      if (password.length < 6) { setError('Password must be at least 6 characters.'); return }
-      if (users[email]) { setError('An account with this email already exists. Try signing in.'); return }
-      users[email] = { name, password }
+      if (!form.name) { setError('Name is required.'); return }
+      if (form.password.length < 6) { setError('Password must be at least 6 characters.'); return }
+      const users = LS.get('mls_users', {})
+      if (users[form.email]) { setError('An account with this email already exists.'); return }
+      users[form.email] = { name: form.name, password: form.password }
       LS.set('mls_users', users)
-      onLogin({ name, email })
+      onLogin({ name: form.name, email: form.email })
     } else {
-      const user = users[email]
-      if (!user) { setError('No account found with this email. Please register first.'); return }
-      if (user.password !== password) { setError('Incorrect password. Please try again.'); return }
-      onLogin({ name: user.name, email })
+      const users = LS.get('mls_users', {})
+      const user = users[form.email]
+      if (!user || user.password !== form.password) { setError('Invalid email or password.'); return }
+      onLogin({ name: user.name, email: form.email })
     }
   }
 
@@ -67,11 +56,11 @@ export default function AuthScreen({ onLogin }) {
         )}
         <div className="field-group">
           <label>Email Address</label>
-          <input type="email" placeholder="you@example.com" value={form.email} onChange={set('email')} onKeyDown={handleKey} autoComplete="email" />
+          <input type="email" placeholder="you@example.com" value={form.email} onChange={set('email')} onKeyDown={handleKey} />
         </div>
         <div className="field-group">
           <label>Password</label>
-          <input type="password" placeholder="••••••••" value={form.password} onChange={set('password')} onKeyDown={handleKey} autoComplete={tab === 'register' ? 'new-password' : 'current-password'} />
+          <input type="password" placeholder="••••••••" value={form.password} onChange={set('password')} onKeyDown={handleKey} />
         </div>
 
         <button className="btn-primary" style={{ width: '100%' }} onClick={handle}>
