@@ -8,11 +8,12 @@ const MODES = [
   { label: 'Long Break',  minutes: 15, color: 'var(--mist)' },
 ]
 
-export default function PomodoroTimer() {
+export default function PomodoroTimer({ storageKey }) {
+  const key = storageKey || 'mls_pomodoro_sessions'
   const [modeIdx, setModeIdx]   = useState(0)
   const [seconds, setSeconds]   = useState(MODES[0].minutes * 60)
   const [running, setRunning]   = useState(false)
-  const [sessions, setSessions] = useState(() => LS.get('mls_pomodoro_sessions', []))
+  const [sessions, setSessions] = useState(() => LS.get(key, []))
   const intervalRef = useRef(null)
   const mode = MODES[modeIdx]
 
@@ -26,9 +27,9 @@ export default function PomodoroTimer() {
             if (modeIdx === 0) {
               // Log completed focus session
               const session = { date: new Date().toLocaleDateString(), time: new Date().toLocaleTimeString(), duration: mode.minutes }
-              const updated = [session, ...LS.get('mls_pomodoro_sessions', [])].slice(0, 50)
+              const updated = [session, ...LS.get(key, [])].slice(0, 50)
               setSessions(updated)
-              LS.set('mls_pomodoro_sessions', updated)
+              LS.set(key, updated)
             }
             return 0
           }

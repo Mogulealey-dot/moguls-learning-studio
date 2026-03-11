@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { LS } from './utils'
-import AuthScreen from './components/AuthScreen'
-import LandingPage from './LandingPage'
+import AuthScreen    from './components/AuthScreen'
+import LandingPage   from './LandingPage'
 import FinanceStudio from './App'
+import GenericStudio from './studios/GenericStudio'
+import STUDIO_CONFIGS from './studioConfigs'
 
 export default function Root() {
   const [user,   setUser]   = useState(() => LS.get('mls_user', null))
@@ -17,6 +19,17 @@ export default function Root() {
 
   if (studio === 'finance') {
     return <FinanceStudio user={user} onLogout={logout} onBack={backToLanding} />
+  }
+
+  if (studio && STUDIO_CONFIGS[studio]) {
+    return (
+      <GenericStudio
+        config={STUDIO_CONFIGS[studio]}
+        user={user}
+        onLogout={logout}
+        onBack={backToLanding}
+      />
+    )
   }
 
   return <LandingPage user={user} onLogout={logout} onEnterStudio={enterStudio} />

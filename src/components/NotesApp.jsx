@@ -7,8 +7,9 @@ function Toast({ msg, onDone }) {
   return <div className="toast">✓ {msg}</div>
 }
 
-export default function NotesApp() {
-  const [notes, setNotes]     = useState(() => LS.get('mls_notes', []))
+export default function NotesApp({ storageKey }) {
+  const key = storageKey || 'mls_notes'
+  const [notes, setNotes]     = useState(() => LS.get(key, []))
   const [activeId, setActiveId] = useState(null)
   const [title, setTitle]     = useState('')
   const [body, setBody]       = useState('')
@@ -17,7 +18,7 @@ export default function NotesApp() {
   const newNote = () => {
     const n = { id: Date.now(), title: 'Untitled Note', body: '', date: new Date().toLocaleDateString() }
     const updated = [n, ...notes]
-    setNotes(updated); LS.set('mls_notes', updated)
+    setNotes(updated); LS.set(key, updated)
     setActiveId(n.id); setTitle(n.title); setBody(n.body)
   }
 
@@ -27,12 +28,12 @@ export default function NotesApp() {
     const updated = notes.map((n) =>
       n.id === activeId ? { ...n, title: title || 'Untitled', body, date: new Date().toLocaleDateString() } : n
     )
-    setNotes(updated); LS.set('mls_notes', updated); setToast('Note saved!')
+    setNotes(updated); LS.set(key, updated); setToast('Note saved!')
   }
 
   const deleteNote = () => {
     const updated = notes.filter((n) => n.id !== activeId)
-    setNotes(updated); LS.set('mls_notes', updated)
+    setNotes(updated); LS.set(key, updated)
     setActiveId(null); setTitle(''); setBody('')
   }
 

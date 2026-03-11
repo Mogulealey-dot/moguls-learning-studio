@@ -19,7 +19,7 @@ const STUDIOS = [
     desc: 'Calculus, linear algebra, statistics, and discrete mathematics — interactive problem solving and concept mastery.',
     color: '#4a9eca',
     tags: ['Calculus', 'Statistics', 'Linear Algebra', 'Proofs'],
-    status: 'soon',
+    status: 'active',
   },
   {
     id: 'cs',
@@ -29,7 +29,7 @@ const STUDIOS = [
     desc: 'Data structures, algorithm design, and software engineering — a workspace for the digital-age thinker.',
     color: '#6e8efb',
     tags: ['Algorithms', 'Data Structures', 'Code Notes', 'Complexity'],
-    status: 'soon',
+    status: 'active',
   },
   {
     id: 'philosophy',
@@ -39,7 +39,7 @@ const STUDIOS = [
     desc: 'Explore the great questions. Structured argument mapping, reading notes, and Socratic dialogue with AI.',
     color: '#9b7fd4',
     tags: ['Logic', 'Ethics', 'Critical Thinking', 'Epistemology'],
-    status: 'soon',
+    status: 'active',
   },
   {
     id: 'sciences',
@@ -49,7 +49,7 @@ const STUDIOS = [
     desc: 'Scientific method, lab reports, and concept mastery — your digital lab notebook, reimagined.',
     color: '#2ecc71',
     tags: ['Physics', 'Chemistry', 'Biology', 'Lab Reports'],
-    status: 'soon',
+    status: 'active',
   },
   {
     id: 'literature',
@@ -59,7 +59,7 @@ const STUDIOS = [
     desc: 'Analyse texts, track themes, and develop your voice as a writer and critical reader.',
     color: '#e8a84c',
     tags: ['Analysis', 'Essay Writing', 'Book Notes', 'Rhetoric'],
-    status: 'soon',
+    status: 'active',
   },
   {
     id: 'history',
@@ -69,7 +69,7 @@ const STUDIOS = [
     desc: 'Timeline tools, geopolitical analysis, and structured note-taking for the student of world affairs.',
     color: '#cd6155',
     tags: ['Timelines', 'Essays', 'Research', 'Geopolitics'],
-    status: 'soon',
+    status: 'active',
   },
   {
     id: 'arts',
@@ -79,7 +79,7 @@ const STUDIOS = [
     desc: 'Mood boards, project planning, and portfolio organisation for the creatively inclined mind.',
     color: '#e74c8b',
     tags: ['Portfolio', 'Projects', 'Inspiration', 'Critique'],
-    status: 'soon',
+    status: 'active',
   },
 ]
 
