@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { LS } from '../utils'
+import { useUserData } from '../hooks/useUserData'
 import s from './StudioTools.module.css'
 
 /* ── Key Historical Figures ── */
@@ -27,18 +27,17 @@ const REGIONS = ['All', 'Rome', 'Greece/Persia', 'Egypt', 'Mongolia', 'Italy', '
 /* ── Timeline Builder ── */
 function TimelineBuilder({ storageKey }) {
   const key = storageKey || 'mls_timeline'
-  const [events, setEvents] = useState(() => LS.get(key, []))
+  const [events, setEvents] = useUserData(key, [])
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState({ year: '', title: '', desc: '', category: 'Political' })
   const [catFilter, setCatFilter] = useState('All')
 
   const cats = ['All', 'Political', 'Military', 'Scientific', 'Cultural', 'Economic', 'Social']
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
-  const save = (updated) => { setEvents(updated); LS.set(key, updated) }
 
   const add = () => {
     if (!form.year || !form.title) return
-    save([...events, { id: Date.now(), ...form }].sort((a, b) => parseInt(a.year) - parseInt(b.year)))
+    setEvents([...events, { id: Date.now(), ...form }].sort((a, b) => parseInt(a.year) - parseInt(b.year)))
     setForm({ year: '', title: '', desc: '', category: 'Political' })
     setShowForm(false)
   }
@@ -102,7 +101,7 @@ function TimelineBuilder({ storageKey }) {
                   <span className={s.timelineCat} style={{ color: catColors[ev.category] || 'var(--gold)' }}>{ev.category}</span>
                 </div>
                 <button className={s.btnSmall} style={{ flexShrink: 0, marginLeft: 12 }}
-                  onClick={() => save(events.filter((x) => x.id !== ev.id))}>✕</button>
+                  onClick={() => setEvents(events.filter((x) => x.id !== ev.id))}>✕</button>
               </div>
             </div>
           ))}
