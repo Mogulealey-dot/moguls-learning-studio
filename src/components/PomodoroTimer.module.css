@@ -1,0 +1,31 @@
+.layout { display: grid; grid-template-columns: auto 1fr; gap: 40px; align-items: start; }
+.timerCard { background: rgba(245,240,232,0.03); border: 1px solid rgba(201,168,76,0.15); border-radius: 8px; padding: 36px 40px; display: flex; flex-direction: column; align-items: center; gap: 28px; min-width: 320px; }
+.modeTabs { display: flex; gap: 8px; }
+.modeTab { background: rgba(245,240,232,0.04); border: 1px solid rgba(201,168,76,0.15); color: var(--mist); padding: 8px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
+.modeTab:hover { color: var(--cream); }
+.activeMode { font-weight: 600; }
+.clockWrap { position: relative; width: 220px; height: 220px; }
+.clockCenter { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.timeDisplay { font-family: 'DM Mono', monospace; font-size: 48px; font-weight: 500; letter-spacing: -1px; line-height: 1; }
+.modeLabel { font-size: 12px; color: var(--mist); letter-spacing: 0.15em; text-transform: uppercase; margin-top: 8px; }
+.controls { display: flex; gap: 12px; align-items: center; }
+.ctrlBtn { background: rgba(245,240,232,0.06); border: 1px solid rgba(201,168,76,0.2); color: var(--mist); padding: 10px 20px; border-radius: 4px; font-size: 14px; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
+.ctrlBtn:hover { color: var(--cream); border-color: rgba(201,168,76,0.4); }
+.playBtn { border: none; color: var(--ink); padding: 12px 32px; border-radius: 4px; font-size: 15px; font-weight: 700; cursor: pointer; transition: opacity 0.2s; font-family: 'DM Sans', sans-serif; }
+.playBtn:hover { opacity: 0.85; }
+/* Stats */
+.statsPanel { display: flex; flex-direction: column; gap: 24px; }
+.statGrid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+.statBox { background: rgba(245,240,232,0.03); border: 1px solid rgba(201,168,76,0.12); border-radius: 4px; padding: 20px; text-align: center; }
+.statNum { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; line-height: 1; margin-bottom: 6px; }
+.statLbl { font-size: 11px; color: var(--mist); text-transform: uppercase; letter-spacing: 0.08em; }
+.sessionLog { background: rgba(245,240,232,0.03); border: 1px solid rgba(201,168,76,0.12); border-radius: 4px; padding: 20px; }
+.logTitle { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+.logEmpty { font-size: 13px; color: var(--mist); opacity: 0.6; }
+.logItem { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(245,240,232,0.04); font-size: 13px; }
+.logItem:last-child { border-bottom: none; }
+.logIcon { font-size: 14px; }
+.logDate { color: var(--mist); flex: 1; }
+.logTime { color: var(--mist); font-family: 'DM Mono', monospace; font-size: 11px; }
+.logDur { color: var(--gold); font-weight: 600; font-family: 'DM Mono', monospace; }
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .timerCard { min-width: unset; } }
