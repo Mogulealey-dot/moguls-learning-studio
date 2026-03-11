@@ -74,8 +74,17 @@ function MaterialsSection({ prefix, studioName }) {
 export default function GenericStudio({ config, user, onLogout, onBack }) {
   const [activeSection, setActiveSection] = useState('home')
   const { ToolsComponent, storagePrefix, name, color, icon, heroTitle, heroSub, subjects, navLinks, aiSystemPrompt } = config
-  const [contextNotes] = useUserData(`${storagePrefix}_notes`, [])
-  const [contextTasks] = useUserData(`${storagePrefix}_tasks`, [])
+  const [contextNotes]    = useUserData(`${storagePrefix}_notes`, [])
+  const [contextTasks]    = useUserData(`${storagePrefix}_tasks`, [])
+  const [contextPomodoro] = useUserData(`${storagePrefix}_pomodoro`, [])
+  const [contextUploads]  = useUserData(`${storagePrefix}_upload_notes`, [])
+
+  const navBadges = {
+    tasks:     contextTasks.filter((t) => !t.done).length,
+    notes:     contextNotes.length,
+    pomodoro:  contextPomodoro.filter((s) => s.date === new Date().toLocaleDateString()).length,
+    materials: contextUploads.length,
+  }
 
   const scrollTo = (id) => {
     const el = document.getElementById(id)
@@ -93,6 +102,7 @@ export default function GenericStudio({ config, user, onLogout, onBack }) {
         activeSection={activeSection}
         studioName={name}
         navLinks={navLinks}
+        navBadges={navBadges}
       />
 
       {/* ── Hero ── */}

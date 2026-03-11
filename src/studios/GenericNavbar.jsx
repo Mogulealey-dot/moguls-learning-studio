@@ -5,7 +5,7 @@ import ThemeToggle from '../components/ThemeToggle'
 import GlobalSearch from '../components/GlobalSearch'
 import StudyRoom from '../components/StudyRoom'
 
-export default function GenericNavbar({ user, onLogout, onBack, scrollTo, activeSection, studioName, navLinks }) {
+export default function GenericNavbar({ user, onLogout, onBack, scrollTo, activeSection, studioName, navLinks, navBadges = {} }) {
   const [showProfile, setShowProfile] = useState(false)
   const [showSearch, setShowSearch] = useState(false)
   const [showRoom, setShowRoom] = useState(false)
@@ -55,16 +55,21 @@ export default function GenericNavbar({ user, onLogout, onBack, scrollTo, active
       </div>
 
       <ul className={styles.links}>
-        {links.map(([id, label]) => (
-          <li key={id}>
-            <a
-              className={activeSection === id ? styles.active : ''}
-              onClick={() => scrollTo(id)}
-            >
-              {label}
-            </a>
-          </li>
-        ))}
+        {links.map(([id, label]) => {
+          const count = navBadges[id]
+          const badgeType = id === 'tasks' ? styles.badgeTasks : styles.badge
+          return (
+            <li key={id}>
+              <a
+                className={activeSection === id ? styles.active : ''}
+                onClick={() => scrollTo(id)}
+              >
+                {label}
+                {count > 0 && <span className={badgeType}>{count}</span>}
+              </a>
+            </li>
+          )
+        })}
       </ul>
 
       <div className={styles.searchWrap} ref={ref}>
