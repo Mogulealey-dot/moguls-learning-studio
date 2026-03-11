@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { LS } from '../utils'
+import { useUserData } from '../hooks/useUserData'
 import s from './StudioTools.module.css'
 
 /* ── Color Theory ── */
@@ -37,17 +37,16 @@ const DESIGN_PRINCIPLES = [
 /* ── Project Tracker ── */
 function ProjectTracker({ storageKey }) {
   const key = storageKey || 'mls_art_projects'
-  const [projects, setProjects] = useState(() => LS.get(key, []))
+  const [projects, setProjects] = useUserData(key, [])
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState({ title: '', medium: '', status: 'In Progress', deadline: '', notes: '' })
   const [statusFilter, setStatusFilter] = useState('All')
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
-  const save = (updated) => { setProjects(updated); LS.set(key, updated) }
 
   const add = () => {
     if (!form.title) return
-    save([{ id: Date.now(), ...form, created: new Date().toLocaleDateString() }, ...projects])
+    setProjects([{ id: Date.now(), ...form, created: new Date().toLocaleDateString() }, ...projects])
     setForm({ title: '', medium: '', status: 'In Progress', deadline: '', notes: '' })
     setShowForm(false)
   }
@@ -117,7 +116,7 @@ function ProjectTracker({ storageKey }) {
             </div>
             <div className={s.itemActions} style={{ flexDirection: 'column', alignItems: 'flex-end', gap: 6 }}>
               <span className={s.badge} style={{ color: statusColors[p.status], borderColor: statusColors[p.status], whiteSpace: 'nowrap' }}>{p.status}</span>
-              <button className={s.btnSmall} onClick={() => save(projects.filter((x) => x.id !== p.id))}>✕</button>
+              <button className={s.btnSmall} onClick={() => setProjects(projects.filter((x) => x.id !== p.id))}>✕</button>
             </div>
           </div>
         ))}

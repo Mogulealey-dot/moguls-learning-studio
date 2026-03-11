@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { LS } from '../utils'
+import { useUserData } from '../hooks/useUserData'
 import styles from './TaskTracker.module.css'
 
 const PRIORITIES = ['High', 'Medium', 'Low']
@@ -19,7 +19,7 @@ function daysLeft(due) {
 export default function TaskTracker({ storageKey, subjects }) {
   const key      = storageKey || 'mls_tasks'
   const SUBJECTS = subjects || SUBJECTS_DEFAULT
-  const [tasks, setTasks]       = useState(() => LS.get(key, []))
+  const [tasks, setTasks]       = useUserData(key, [])
   const [showForm, setShowForm] = useState(false)
   const [filter, setFilter]     = useState('all')
   const [form, setForm]         = useState({ title: '', subject: SUBJECTS[0], due: '', priority: 'Medium', notes: '' })
@@ -29,21 +29,13 @@ export default function TaskTracker({ storageKey, subjects }) {
   const addTask = () => {
     if (!form.title || !form.due) return
     const t = { id: Date.now(), ...form, done: false, created: new Date().toLocaleDateString() }
-    const updated = [t, ...tasks]
-    setTasks(updated); LS.set(key, updated)
+    setTasks([t, ...tasks])
     setForm({ title: '', subject: SUBJECTS[0], due: '', priority: 'Medium', notes: '' })
     setShowForm(false)
   }
 
-  const toggle = (id) => {
-    const updated = tasks.map((t) => t.id === id ? { ...t, done: !t.done } : t)
-    setTasks(updated); LS.set(key, updated)
-  }
-
-  const remove = (id) => {
-    const updated = tasks.filter((t) => t.id !== id)
-    setTasks(updated); LS.set(key, updated)
-  }
+  const toggle = (id) => setTasks(tasks.map((t) => t.id === id ? { ...t, done: !t.done } : t))
+  const remove = (id) => setTasks(tasks.filter((t) => t.id !== id))
 
   const filtered = tasks.filter((t) => {
     if (filter === 'active')   return !t.done

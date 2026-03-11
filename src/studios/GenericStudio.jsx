@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { LS, QUOTES } from '../utils'
+import { QUOTES } from '../utils'
+import { useUserData } from '../hooks/useUserData'
 
 import GenericNavbar      from './GenericNavbar'
 import TaskTracker        from '../components/TaskTracker'
@@ -27,15 +28,19 @@ function QuoteTicker() {
 }
 
 function StatsRow({ prefix }) {
-  const noteCount  = LS.get(`${prefix}_notes`, []).length
-  const uploads    = LS.get(`${prefix}_upload_notes`, []).length
-  const taskCount  = LS.get(`${prefix}_tasks`, []).filter((t) => !t.done).length
-  const sessions   = LS.get(`${prefix}_pomodoro`, []).filter((s) => s.date === new Date().toLocaleDateString()).length
+  const [notes]    = useUserData(`${prefix}_notes`, [])
+  const [uploads]  = useUserData(`${prefix}_upload_notes`, [])
+  const [tasks]    = useUserData(`${prefix}_tasks`, [])
+  const [pomodoro] = useUserData(`${prefix}_pomodoro`, [])
+  const noteCount = notes.length
+  const uploadCount = uploads.length
+  const taskCount = tasks.filter((t) => !t.done).length
+  const sessions  = pomodoro.filter((s) => s.date === new Date().toLocaleDateString()).length
   const stats = [
-    { n: noteCount,  label: 'Notes',          color: 'var(--accent, var(--gold))' },
-    { n: uploads,    label: 'Files',           color: 'var(--accent, var(--gold))' },
-    { n: taskCount,  label: 'Pending Tasks',   color: taskCount > 0 ? 'var(--crimson)' : 'var(--emerald-light)' },
-    { n: sessions,   label: 'Sessions Today 🍅', color: 'var(--emerald-light)' },
+    { n: noteCount,   label: 'Notes',            color: 'var(--accent, var(--gold))' },
+    { n: uploadCount, label: 'Files',             color: 'var(--accent, var(--gold))' },
+    { n: taskCount,   label: 'Pending Tasks',     color: taskCount > 0 ? 'var(--crimson)' : 'var(--emerald-light)' },
+    { n: sessions,    label: 'Sessions Today 🍅', color: 'var(--emerald-light)' },
   ]
   return (
     <div className={gs.statsRow}>

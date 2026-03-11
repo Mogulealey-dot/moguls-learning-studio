@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { LS } from '../utils'
+import { useUserData } from '../hooks/useUserData'
 import s from './StudioTools.module.css'
 
 /* ── Philosophers Reference ── */
@@ -25,16 +25,14 @@ const SCHOOLS = ['All', 'Classical Greek', 'Platonism', 'Peripatetic', 'Stoicism
 /* ── Argument Builder ── */
 function ArgumentBuilder({ storageKey }) {
   const key = storageKey || 'mls_arguments'
-  const [args, setArgs] = useState(() => LS.get(key, []))
+  const [args, setArgs] = useUserData(key, [])
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState({ title: '', premises: ['', ''], conclusion: '' })
-
-  const save = (updated) => { setArgs(updated); LS.set(key, updated) }
 
   const addArg = () => {
     if (!form.title || !form.conclusion) return
     const a = { id: Date.now(), ...form, premises: form.premises.filter((p) => p.trim()) }
-    save([a, ...args])
+    setArgs([a, ...args])
     setForm({ title: '', premises: ['', ''], conclusion: '' })
     setShowForm(false)
   }
@@ -94,7 +92,7 @@ function ArgumentBuilder({ storageKey }) {
           <div key={a.id} className={s.argCard}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
               <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--cream)' }}>{a.title}</div>
-              <button className={s.btnSmall} onClick={() => save(args.filter((x) => x.id !== a.id))}>✕</button>
+              <button className={s.btnSmall} onClick={() => setArgs(args.filter((x) => x.id !== a.id))}>✕</button>
             </div>
             <div className={s.premiseList}>
               {a.premises.map((p, i) => (

@@ -1,9 +1,9 @@
 import { useState, useRef } from 'react'
-import { LS } from '../utils'
+import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage'
+import { storage } from '../firebase'
+import { useAuth } from '../contexts/AuthContext'
+import { useUserData } from '../hooks/useUserData'
 import styles from './UploadCard.module.css'
-
-// Blob URLs live for the session only — browser security limitation
-const blobRegistry = {}
 
 function fileIcon(type) {
   if (type.includes('pdf'))   return '📄'
@@ -16,32 +16,45 @@ function fmtSize(b) {
 }
 
 export default function UploadCard({ icon, title, desc, storageKey }) {
-  const [files, setFiles]     = useState(() => LS.get(storageKey, []))
-  const [dragging, setDragging] = useState(false)
+  const { currentUser } = useAuth()
+  const [files, setFiles]         = useUserData(storageKey, [])
+  const [uploading, setUploading] = useState(false)
+  const [progress, setProgress]   = useState(0)
+  const [dragging, setDragging]   = useState(false)
   const inputRef = useRef()
 
-  const addFiles = (fileList) => {
-    const newFiles = Array.from(fileList).map((f) => {
-      const id = Date.now() + Math.random()
-      blobRegistry[id] = URL.createObjectURL(f)
-      return { id, name: f.name, size: f.size, type: f.type, date: new Date().toLocaleDateString() }
-    })
-    const updated = [...files, ...newFiles]
-    setFiles(updated)
-    LS.set(storageKey, updated)
+  const addFiles = async (fileList) => {
+    if (!currentUser || uploading) return
+    setUploading(true)
+
+    const uploaded = []
+    for (const f of Array.from(fileList)) {
+      const id = `${Date.now()}_${Math.random().toString(36).slice(2)}`
+      const storagePath = `users/${currentUser.uid}/${storageKey}/${id}_${f.name}`
+      const task = uploadBytesResumable(ref(storage, storagePath), f)
+
+      await new Promise((resolve, reject) => {
+        task.on(
+          'state_changed',
+          (snap) => setProgress(Math.round((snap.bytesTransferred / snap.totalBytes) * 100)),
+          reject,
+          async () => {
+            const url = await getDownloadURL(task.snapshot.ref)
+            uploaded.push({ id, name: f.name, size: f.size, type: f.type, date: new Date().toLocaleDateString(), url, storagePath })
+            resolve()
+          }
+        )
+      }).catch((err) => console.error('Upload failed:', err))
+    }
+
+    if (uploaded.length > 0) setFiles([...files, ...uploaded])
+    setUploading(false)
+    setProgress(0)
   }
 
-  const openFile = (id) => {
-    const url = blobRegistry[id]
-    if (url) window.open(url, '_blank')
-    else alert('⚠ Re-upload this file to open it. Browser security prevents opening files from a previous session.')
-  }
-
-  const removeFile = (id) => {
-    if (blobRegistry[id]) { URL.revokeObjectURL(blobRegistry[id]); delete blobRegistry[id] }
-    const updated = files.filter((f) => f.id !== id)
-    setFiles(updated)
-    LS.set(storageKey, updated)
+  const removeFile = async (file) => {
+    try { await deleteObject(ref(storage, file.storagePath)) } catch { /* already deleted */ }
+    setFiles(files.filter((f) => f.id !== file.id))
   }
 
   return (
@@ -52,16 +65,27 @@ export default function UploadCard({ icon, title, desc, storageKey }) {
 
       <div
         className={`${styles.dropzone} ${dragging ? styles.dragging : ''}`}
-        onClick={() => inputRef.current.click()}
+        onClick={() => !uploading && inputRef.current.click()}
         onDragOver={(e) => { e.preventDefault(); setDragging(true) }}
         onDragLeave={() => setDragging(false)}
         onDrop={(e) => { e.preventDefault(); setDragging(false); addFiles(e.dataTransfer.files) }}
+        style={{ cursor: uploading ? 'default' : 'pointer' }}
       >
-        <div className={styles.dropText}>
-          <div className={styles.dropPlus}>⊕</div>
-          <strong>Click to upload</strong> or drag & drop
-          <br /><span className={styles.dropHint}>PDF, DOC, images, etc.</span>
-        </div>
+        {uploading ? (
+          <div className={styles.dropText}>
+            <div className={styles.dropPlus}>⬆</div>
+            <strong>Uploading… {progress}%</strong>
+            <div style={{ marginTop: 10, height: 4, background: 'rgba(245,240,232,0.1)', borderRadius: 2, width: '80%', margin: '10px auto 0' }}>
+              <div style={{ height: '100%', width: `${progress}%`, background: 'var(--accent, var(--gold))', borderRadius: 2, transition: 'width 0.3s' }} />
+            </div>
+          </div>
+        ) : (
+          <div className={styles.dropText}>
+            <div className={styles.dropPlus}>⊕</div>
+            <strong>Click to upload</strong> or drag & drop
+            <br /><span className={styles.dropHint}>PDF, DOC, images, etc. — stored in the cloud ☁</span>
+          </div>
+        )}
         <input ref={inputRef} type="file" multiple style={{ display: 'none' }} onChange={(e) => addFiles(e.target.files)} />
       </div>
 
@@ -74,12 +98,10 @@ export default function UploadCard({ icon, title, desc, storageKey }) {
               <span className={styles.fileSize}>{fmtSize(f.size)}</span>
               <button
                 className={styles.openBtn}
-                onClick={() => openFile(f.id)}
-                title={blobRegistry[f.id] ? 'Open in new tab' : 'Re-upload to open'}
-              >
-                {blobRegistry[f.id] ? '↗' : '⚠'}
-              </button>
-              <button className={styles.deleteBtn} onClick={() => removeFile(f.id)} title="Remove">✕</button>
+                onClick={() => f.url && window.open(f.url, '_blank')}
+                title="Open file"
+              >↗</button>
+              <button className={styles.deleteBtn} onClick={() => removeFile(f)} title="Remove">✕</button>
             </div>
           ))}
         </div>

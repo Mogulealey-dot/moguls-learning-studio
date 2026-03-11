@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { LS } from '../utils'
+import { useUserData } from '../hooks/useUserData'
 import styles from './PomodoroTimer.module.css'
 
 const MODES = [
@@ -13,9 +13,13 @@ export default function PomodoroTimer({ storageKey }) {
   const [modeIdx, setModeIdx]   = useState(0)
   const [seconds, setSeconds]   = useState(MODES[0].minutes * 60)
   const [running, setRunning]   = useState(false)
-  const [sessions, setSessions] = useState(() => LS.get(key, []))
+  const [sessions, setSessions] = useUserData(key, [])
   const intervalRef = useRef(null)
+  const sessionsRef = useRef(sessions)
   const mode = MODES[modeIdx]
+
+  // Keep ref in sync so the interval closure can read latest sessions
+  useEffect(() => { sessionsRef.current = sessions }, [sessions])
 
   useEffect(() => {
     if (running) {
@@ -25,11 +29,9 @@ export default function PomodoroTimer({ storageKey }) {
             clearInterval(intervalRef.current)
             setRunning(false)
             if (modeIdx === 0) {
-              // Log completed focus session
               const session = { date: new Date().toLocaleDateString(), time: new Date().toLocaleTimeString(), duration: mode.minutes }
-              const updated = [session, ...LS.get(key, [])].slice(0, 50)
+              const updated = [session, ...sessionsRef.current].slice(0, 50)
               setSessions(updated)
-              LS.set(key, updated)
             }
             return 0
           }
@@ -40,7 +42,7 @@ export default function PomodoroTimer({ storageKey }) {
       clearInterval(intervalRef.current)
     }
     return () => clearInterval(intervalRef.current)
-  }, [running])
+  }, [running]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const switchMode = (idx) => {
     setModeIdx(idx)

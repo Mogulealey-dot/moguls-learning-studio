@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { LS, QUOTES } from './utils'
+import { QUOTES } from './utils'
+import { useUserData } from './hooks/useUserData'
 
 import Navbar              from './components/Navbar'
 import HeroSlider          from './components/HeroSlider'
@@ -29,17 +30,22 @@ function QuoteTicker() {
 }
 
 function StatsRow() {
-  const noteCount    = LS.get('mls_notes',           []).length
-  const notesUploads = LS.get('mls_notes_upload',    []).length
-  const papersCount  = LS.get('mls_papers_upload',   []).length
-  const taskCount    = LS.get('mls_tasks',           []).filter(t => !t.done).length
-  const sessions     = LS.get('mls_pomodoro_sessions',[]).filter(s => s.date === new Date().toLocaleDateString()).length
+  const [notes]    = useUserData('mls_notes',            [])
+  const [uploads]  = useUserData('mls_notes_upload',     [])
+  const [papers]   = useUserData('mls_papers_upload',    [])
+  const [tasks]    = useUserData('mls_tasks',            [])
+  const [pomodoro] = useUserData('mls_pomodoro_sessions', [])
+  const noteCount   = notes.length
+  const uploadCount = uploads.length
+  const paperCount  = papers.length
+  const taskCount   = tasks.filter(t => !t.done).length
+  const sessions    = pomodoro.filter(s => s.date === new Date().toLocaleDateString()).length
   const stats = [
-    { n:noteCount,    label:'Personal Notes',    color:'var(--gold)' },
-    { n:notesUploads, label:'Files Uploaded',    color:'var(--gold)' },
-    { n:papersCount,  label:'Exam Papers',       color:'var(--gold)' },
-    { n:taskCount,    label:'Pending Tasks',     color: taskCount > 0 ? 'var(--crimson)' : 'var(--emerald-light)' },
-    { n:sessions,     label:'Sessions Today 🍅', color:'var(--emerald-light)' },
+    { n:noteCount,   label:'Personal Notes',    color:'var(--gold)' },
+    { n:uploadCount, label:'Files Uploaded',    color:'var(--gold)' },
+    { n:paperCount,  label:'Exam Papers',       color:'var(--gold)' },
+    { n:taskCount,   label:'Pending Tasks',     color: taskCount > 0 ? 'var(--crimson)' : 'var(--emerald-light)' },
+    { n:sessions,    label:'Sessions Today 🍅', color:'var(--emerald-light)' },
   ]
   return (
     <div style={{ padding:'48px 60px 0', display:'grid', gridTemplateColumns:'repeat(5,1fr)', gap:16 }}>

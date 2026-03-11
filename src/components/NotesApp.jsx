@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { LS } from '../utils'
+import { useUserData } from '../hooks/useUserData'
 import styles from './NotesApp.module.css'
 
 function Toast({ msg, onDone }) {
@@ -9,16 +9,15 @@ function Toast({ msg, onDone }) {
 
 export default function NotesApp({ storageKey }) {
   const key = storageKey || 'mls_notes'
-  const [notes, setNotes]     = useState(() => LS.get(key, []))
+  const [notes, setNotes]       = useUserData(key, [])
   const [activeId, setActiveId] = useState(null)
-  const [title, setTitle]     = useState('')
-  const [body, setBody]       = useState('')
-  const [toast, setToast]     = useState('')
+  const [title, setTitle]       = useState('')
+  const [body, setBody]         = useState('')
+  const [toast, setToast]       = useState('')
 
   const newNote = () => {
     const n = { id: Date.now(), title: 'Untitled Note', body: '', date: new Date().toLocaleDateString() }
-    const updated = [n, ...notes]
-    setNotes(updated); LS.set(key, updated)
+    setNotes([n, ...notes])
     setActiveId(n.id); setTitle(n.title); setBody(n.body)
   }
 
@@ -28,12 +27,12 @@ export default function NotesApp({ storageKey }) {
     const updated = notes.map((n) =>
       n.id === activeId ? { ...n, title: title || 'Untitled', body, date: new Date().toLocaleDateString() } : n
     )
-    setNotes(updated); LS.set(key, updated); setToast('Note saved!')
+    setNotes(updated)
+    setToast('Note saved!')
   }
 
   const deleteNote = () => {
-    const updated = notes.filter((n) => n.id !== activeId)
-    setNotes(updated); LS.set(key, updated)
+    setNotes(notes.filter((n) => n.id !== activeId))
     setActiveId(null); setTitle(''); setBody('')
   }
 
@@ -45,7 +44,7 @@ export default function NotesApp({ storageKey }) {
         <h2 className="section-title">My <em>Notepad</em></h2>
         <div className="divider" />
         <p style={{ marginTop: 16, fontSize: 14, color: 'var(--mist)' }}>
-          Notes are saved in your browser — they persist between sessions.
+          Notes are saved to the cloud — access them from any device.
         </p>
       </div>
       <div className={styles.layout}>

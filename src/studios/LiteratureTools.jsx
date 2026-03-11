@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { LS } from '../utils'
+import { useUserData } from '../hooks/useUserData'
 import s from './StudioTools.module.css'
 
 /* ── Literary Devices ── */
@@ -36,17 +36,16 @@ const DEVICES = [
 /* ── Book Tracker ── */
 function BookTracker({ storageKey }) {
   const key = storageKey || 'mls_books'
-  const [books, setBooks] = useState(() => LS.get(key, []))
+  const [books, setBooks] = useUserData(key, [])
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState({ title: '', author: '', status: 'Reading', genre: '', rating: '5', notes: '' })
   const [statusFilter, setStatusFilter] = useState('All')
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
-  const save = (updated) => { setBooks(updated); LS.set(key, updated) }
 
   const add = () => {
     if (!form.title) return
-    save([{ id: Date.now(), ...form, added: new Date().toLocaleDateString() }, ...books])
+    setBooks([{ id: Date.now(), ...form, added: new Date().toLocaleDateString() }, ...books])
     setForm({ title: '', author: '', status: 'Reading', genre: '', rating: '5', notes: '' })
     setShowForm(false)
   }
@@ -124,7 +123,7 @@ function BookTracker({ storageKey }) {
             </div>
             <div className={s.itemActions} style={{ flexDirection: 'column', alignItems: 'flex-end', gap: 6 }}>
               <span className={s.badge} style={{ color: statusColor[b.status], borderColor: statusColor[b.status] }}>{b.status}</span>
-              <button className={s.btnSmall} onClick={() => save(books.filter((x) => x.id !== b.id))}>✕</button>
+              <button className={s.btnSmall} onClick={() => setBooks(books.filter((x) => x.id !== b.id))}>✕</button>
             </div>
           </div>
         ))}
