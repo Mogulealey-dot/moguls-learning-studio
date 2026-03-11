@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useUserData } from '../hooks/useUserData'
 import styles from './TaskTracker.module.css'
 
@@ -16,11 +16,43 @@ function daysLeft(due) {
   return Math.ceil(diff / (1000 * 60 * 60 * 24))
 }
 
+function requestNotificationPermission() {
+  if ('Notification' in window && Notification.permission === 'default') {
+    Notification.requestPermission()
+  }
+}
+
+function checkDueReminders(tasks) {
+  if (!('Notification' in window) || Notification.permission !== 'granted') return
+  const today = new Date().toLocaleDateString()
+  const dueTodayOrOverdue = tasks.filter((t) => !t.done && (daysLeft(t.due) <= 0))
+  if (dueTodayOrOverdue.length > 0) {
+    new Notification('📋 Mogul\'s Learning Studio', {
+      body: `You have ${dueTodayOrOverdue.length} task(s) due today or overdue: ${dueTodayOrOverdue.slice(0, 2).map((t) => t.title).join(', ')}${dueTodayOrOverdue.length > 2 ? '…' : ''}`,
+      icon: '/vite.svg',
+    })
+  }
+}
+
 export default function TaskTracker({ storageKey, subjects }) {
   const key      = storageKey || 'mls_tasks'
   const SUBJECTS = subjects || SUBJECTS_DEFAULT
   const [tasks, setTasks]       = useUserData(key, [])
   const [showForm, setShowForm] = useState(false)
+  const [notifRequested, setNotifRequested] = useState(false)
+
+  useEffect(() => {
+    if (tasks.length > 0 && !notifRequested) {
+      setNotifRequested(true)
+      requestNotificationPermission()
+    }
+  }, [tasks.length]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (tasks.length > 0 && Notification.permission === 'granted') {
+      checkDueReminders(tasks)
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
   const [filter, setFilter]     = useState('all')
   const [form, setForm]         = useState({ title: '', subject: SUBJECTS[0], due: '', priority: 'Medium', notes: '' })
 

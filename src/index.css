@@ -15,6 +15,27 @@
   --white: #ffffff;
   --shadow: rgba(13,13,13,0.15);
   --radius: 6px;
+  --card-bg: rgba(245,240,232,0.04);
+  --border: rgba(201,168,76,0.15);
+  --input-bg: rgba(245,240,232,0.06);
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --ink: #f4f0e6;
+  --cream: #1a140a;
+  --parchment: #e4dfd5;
+  --gold: #9a7230;
+  --gold-light: #b8902a;
+  --emerald: #145a3c;
+  --emerald-light: #1e7a54;
+  --crimson: #7a1525;
+  --mist: #5a6878;
+  --shadow: rgba(0,0,0,0.08);
+  --card-bg: rgba(255,255,255,0.75);
+  --border: rgba(154,114,48,0.2);
+  --input-bg: rgba(255,255,255,0.9);
+  color-scheme: light;
 }
 
 html { scroll-behavior: smooth; }
@@ -132,4 +153,9 @@ a { text-decoration: none; cursor: pointer; }
 
 @media (max-width: 900px) {
   .section { padding: 60px 24px; }
+  .section-title { font-size: clamp(28px, 5vw, 40px); }
+}
+
+@media (max-width: 600px) {
+  .section { padding: 48px 16px; }
 }

@@ -86,6 +86,16 @@
 .noResults { padding: 16px; text-align: center; font-size: 13px; color: var(--mist); }
 /* User area */
 .userArea { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.roomBtn {
+  background: rgba(245,240,232,0.05);
+  border: 1px solid rgba(201,168,76,0.2);
+  color: var(--mist); width: 34px; height: 34px;
+  border-radius: 50%; font-size: 15px;
+  cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.roomBtn:hover { border-color: var(--gold); background: rgba(201,168,76,0.08); }
 .avatar {
   width: 34px; height: 34px; border-radius: 50%;
   background: linear-gradient(135deg, var(--gold) 0%, var(--emerald) 100%);

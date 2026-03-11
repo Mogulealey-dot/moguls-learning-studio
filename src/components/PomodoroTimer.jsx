@@ -2,6 +2,22 @@ import { useState, useEffect, useRef } from 'react'
 import { useUserData } from '../hooks/useUserData'
 import styles from './PomodoroTimer.module.css'
 
+function calcStreak(sessions) {
+  if (!sessions || sessions.length === 0) return 0
+  const days = [...new Set(sessions.map((s) => s.date))].sort((a, b) => new Date(b) - new Date(a))
+  let streak = 0
+  let cursor = new Date()
+  cursor.setHours(0, 0, 0, 0)
+  for (const day of days) {
+    const d = new Date(day)
+    d.setHours(0, 0, 0, 0)
+    const diff = Math.round((cursor - d) / 86400000)
+    if (diff === 0 || diff === streak) { streak++; cursor = d }
+    else break
+  }
+  return streak
+}
+
 const MODES = [
   { label: 'Focus',       minutes: 25, color: 'var(--gold)' },
   { label: 'Short Break', minutes: 5,  color: 'var(--emerald-light)' },
@@ -60,6 +76,7 @@ export default function PomodoroTimer({ storageKey }) {
 
   const todaySessions = sessions.filter((s) => s.date === new Date().toLocaleDateString()).length
   const totalMins = sessions.reduce((a, s) => a + s.duration, 0)
+  const streak = calcStreak(sessions)
 
   return (
     <section id="pomodoro" className="section" style={{ background: 'rgba(245,240,232,0.01)', borderTop: '1px solid rgba(201,168,76,0.08)' }}>
@@ -130,6 +147,12 @@ export default function PomodoroTimer({ storageKey }) {
             <div className={styles.statBox}>
               <div className={styles.statNum} style={{ color: 'var(--gold)' }}>{Math.round(totalMins / 60 * 10) / 10}</div>
               <div className={styles.statLbl}>Total Hours</div>
+            </div>
+            <div className={styles.statBox} style={{ gridColumn: 'span 2' }}>
+              <div className={styles.statNum} style={{ color: streak > 0 ? '#e8a84c' : 'var(--mist)' }}>
+                {streak} {streak === 1 ? 'day' : 'days'} {streak > 0 ? '🔥' : ''}
+              </div>
+              <div className={styles.statLbl}>Study Streak</div>
             </div>
           </div>
 

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useUserData } from '../hooks/useUserData'
 import styles from './NotesApp.module.css'
+import jsPDF from 'jspdf'
 
 function Toast({ msg, onDone }) {
   useState(() => { const t = setTimeout(onDone, 2800); return () => clearTimeout(t) })
@@ -34,6 +35,32 @@ export default function NotesApp({ storageKey }) {
   const deleteNote = () => {
     setNotes(notes.filter((n) => n.id !== activeId))
     setActiveId(null); setTitle(''); setBody('')
+  }
+
+  const exportPDF = () => {
+    const doc = new jsPDF({ unit: 'pt', format: 'a4' })
+    const margin = 60
+    const pageWidth = doc.internal.pageSize.getWidth()
+    const maxWidth = pageWidth - margin * 2
+
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(20)
+    doc.text(title || 'Untitled Note', margin, 80)
+
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(10)
+    doc.setTextColor(120, 120, 120)
+    doc.text(`Mogul's Learning Studio  ·  ${new Date().toLocaleDateString()}`, margin, 104)
+
+    doc.setDrawColor(180, 140, 60)
+    doc.line(margin, 116, margin + 60, 116)
+
+    doc.setFontSize(12)
+    doc.setTextColor(30, 30, 30)
+    const lines = doc.splitTextToSize(body || '', maxWidth)
+    doc.text(lines, margin, 140)
+    doc.save(`${(title || 'note').replace(/[^a-z0-9]/gi, '_')}.pdf`)
+    setToast('PDF exported!')
   }
 
   return (
@@ -89,6 +116,7 @@ export default function NotesApp({ storageKey }) {
               </div>
               <div className={styles.actions}>
                 <button className={styles.deleteBtn} onClick={deleteNote}>Delete</button>
+                <button className={styles.exportBtn} onClick={exportPDF} title="Export as PDF">↓ PDF</button>
                 <button className={styles.saveBtn} onClick={save}>Save Note</button>
               </div>
             </>

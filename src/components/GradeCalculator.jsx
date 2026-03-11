@@ -1,8 +1,12 @@
 import { useState } from 'react'
-import { LS } from '../utils'
+import { useUserData } from '../hooks/useUserData'
 import styles from './GradeCalculator.module.css'
 
-const SUBJECTS_DEFAULT = ['Advanced Financial Management', 'Marketing Management', 'Economics', 'Statistics', 'Strategic Management']
+const DEFAULT_COMPONENTS = [
+  { name: 'Assignments', weight: 30, score: '' },
+  { name: 'Midterm Exam', weight: 30, score: '' },
+  { name: 'Final Exam',   weight: 40, score: '' },
+]
 
 function letterGrade(pct) {
   if (pct >= 90) return { letter: 'A+', gpa: 4.0, color: '#2a9b6e' }
@@ -18,16 +22,13 @@ function letterGrade(pct) {
   return { letter: 'F', gpa: 0.0, color: 'var(--crimson)' }
 }
 
-function SubjectGrader({ subject, onRemove }) {
-  const [components, setComponents] = useState([
-    { name: 'Assignments', weight: 30, score: '' },
-    { name: 'Midterm Exam', weight: 30, score: '' },
-    { name: 'Final Exam',   weight: 40, score: '' },
-  ])
-
-  const update = (i, key, val) => setComponents((cs) => cs.map((c, ci) => ci === i ? { ...c, [key]: val } : c))
-  const addRow  = () => setComponents((cs) => [...cs, { name: '', weight: 0, score: '' }])
-  const remRow  = (i) => setComponents((cs) => cs.filter((_, ci) => ci !== i))
+function SubjectGrader({ subject, components, onChange, onRemove }) {
+  const update = (i, key, val) => {
+    const updated = components.map((c, ci) => ci === i ? { ...c, [key]: val } : c)
+    onChange(updated)
+  }
+  const addRow  = () => onChange([...components, { name: '', weight: 0, score: '' }])
+  const remRow  = (i) => onChange(components.filter((_, ci) => ci !== i))
 
   const totalWeight = components.reduce((a, c) => a + Number(c.weight || 0), 0)
   const weighted    = components.reduce((a, c) => {
@@ -103,14 +104,39 @@ function SubjectGrader({ subject, onRemove }) {
   )
 }
 
-export default function GradeCalculator() {
-  const [subjects, setSubjects] = useState(SUBJECTS_DEFAULT.slice(0, 2))
+export default function GradeCalculator({ defaultSubjects, storageKey }) {
+  const key = storageKey || 'mls_grades'
+  const [gradeData, setGradeData] = useUserData(key, { subjects: [], componentData: {} })
   const [newSubject, setNewSubject] = useState('')
+
+  // subjects list — use saved or fall back to defaultSubjects
+  const subjects = gradeData.subjects && gradeData.subjects.length > 0
+    ? gradeData.subjects
+    : (defaultSubjects || ['Subject 1', 'Subject 2'])
+
+  const componentData = gradeData.componentData || {}
+
+  const getComponents = (subject) =>
+    componentData[subject] || DEFAULT_COMPONENTS.map((c) => ({ ...c }))
+
+  const updateComponents = (subject, updated) => {
+    setGradeData({
+      subjects,
+      componentData: { ...componentData, [subject]: updated },
+    })
+  }
 
   const addSubject = () => {
     const s = newSubject.trim() || `Subject ${subjects.length + 1}`
-    setSubjects((ss) => [...ss, s])
+    setGradeData({ subjects: [...subjects, s], componentData })
     setNewSubject('')
+  }
+
+  const removeSubject = (idx) => {
+    const updated = subjects.filter((_, i) => i !== idx)
+    const updatedData = { ...componentData }
+    delete updatedData[subjects[idx]]
+    setGradeData({ subjects: updated, componentData: updatedData })
   }
 
   return (
@@ -120,7 +146,7 @@ export default function GradeCalculator() {
         <h2 className="section-title">Grade <em>Calculator</em></h2>
         <div className="divider" />
         <p style={{ marginTop: 16, fontSize: 14, color: 'var(--mist)' }}>
-          Enter your assessment weights and scores. Your grade is calculated automatically.
+          Enter your assessment weights and scores. Grades are saved automatically.
         </p>
       </div>
 
@@ -137,7 +163,13 @@ export default function GradeCalculator() {
 
       <div className={styles.subjectList}>
         {subjects.map((s, i) => (
-          <SubjectGrader key={i} subject={s} onRemove={() => setSubjects((ss) => ss.filter((_, si) => si !== i))} />
+          <SubjectGrader
+            key={s}
+            subject={s}
+            components={getComponents(s)}
+            onChange={(updated) => updateComponents(s, updated)}
+            onRemove={() => removeSubject(i)}
+          />
         ))}
       </div>
     </section>

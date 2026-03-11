@@ -1,7 +1,14 @@
 import { useState, useRef, useEffect } from 'react'
 import styles from '../components/Navbar.module.css'
+import ProfilePage from '../components/ProfilePage'
+import ThemeToggle from '../components/ThemeToggle'
+import GlobalSearch from '../components/GlobalSearch'
+import StudyRoom from '../components/StudyRoom'
 
 export default function GenericNavbar({ user, onLogout, onBack, scrollTo, activeSection, studioName, navLinks }) {
+  const [showProfile, setShowProfile] = useState(false)
+  const [showSearch, setShowSearch] = useState(false)
+  const [showRoom, setShowRoom] = useState(false)
   const [query, setQuery] = useState('')
   const [open, setOpen] = useState(false)
   const ref = useRef()
@@ -12,6 +19,17 @@ export default function GenericNavbar({ user, onLogout, onBack, scrollTo, active
     return () => document.removeEventListener('mousedown', handler)
   }, [])
 
+  useEffect(() => {
+    const handler = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault()
+        setShowSearch(true)
+      }
+    }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, [])
+
   const links = navLinks || [['home','Home'],['tasks','Tasks'],['notes','Notes'],['ai','AI ✦']]
   const results = query.trim().length > 0
     ? links.filter(([, label]) => label.toLowerCase().includes(query.toLowerCase()))
@@ -20,6 +38,10 @@ export default function GenericNavbar({ user, onLogout, onBack, scrollTo, active
   const go = (id) => { scrollTo(id); setQuery(''); setOpen(false) }
 
   return (
+    <>
+    {showProfile && <ProfilePage user={user} onClose={() => setShowProfile(false)} onLogout={onLogout} />}
+    {showSearch && <GlobalSearch open={showSearch} onClose={() => setShowSearch(false)} />}
+    {showRoom && <StudyRoom onClose={() => setShowRoom(false)} />}
     <nav className={styles.navbar}>
       <div className={styles.left}>
         {onBack && (
@@ -73,12 +95,18 @@ export default function GenericNavbar({ user, onLogout, onBack, scrollTo, active
       </div>
 
       <div className={styles.userArea}>
-        <div className={styles.avatar}>
+        <button className={styles.roomBtn} onClick={() => setShowRoom(true)} title="Study Room">
+          👥
+        </button>
+        <div className={styles.avatar} onClick={() => setShowProfile(true)} style={{ cursor: 'pointer' }} title="Edit profile">
           {user?.name ? user.name[0].toUpperCase() : '?'}
         </div>
         <span className={styles.userName}>{user?.name}</span>
+        <ThemeToggle />
+        <button className={styles.signOut} onClick={() => setShowProfile(true)}>Profile</button>
         <button className={styles.signOut} onClick={onLogout}>Sign Out</button>
       </div>
     </nav>
+    </>
   )
 }

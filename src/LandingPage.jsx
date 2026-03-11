@@ -1,4 +1,9 @@
+import { useState, useEffect } from 'react'
 import styles from './LandingPage.module.css'
+import ProfilePage from './components/ProfilePage'
+import ThemeToggle from './components/ThemeToggle'
+import GlobalSearch from './components/GlobalSearch'
+import StudyRoom from './components/StudyRoom'
 
 const STUDIOS = [
   {
@@ -85,9 +90,26 @@ const STUDIOS = [
 
 export default function LandingPage({ user, onLogout, onEnterStudio }) {
   const firstName = user?.name?.split(' ')[0] || 'Scholar'
+  const [showProfile, setShowProfile] = useState(false)
+  const [showSearch, setShowSearch] = useState(false)
+  const [showRoom, setShowRoom] = useState(false)
+
+  useEffect(() => {
+    const handler = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault()
+        setShowSearch(true)
+      }
+    }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, [])
 
   return (
     <div className={styles.page}>
+      {showProfile && <ProfilePage user={user} onClose={() => setShowProfile(false)} onLogout={onLogout} />}
+      {showSearch && <GlobalSearch open={showSearch} onClose={() => setShowSearch(false)} />}
+      {showRoom && <StudyRoom onClose={() => setShowRoom(false)} />}
       {/* ── Header ── */}
       <header className={styles.header}>
         <div className={styles.brand}>
@@ -95,8 +117,18 @@ export default function LandingPage({ user, onLogout, onEnterStudio }) {
           <span><em>Mogul's</em> Learning Studio</span>
         </div>
         <div className={styles.userArea}>
-          <div className={styles.avatar}>{user?.name ? user.name[0].toUpperCase() : '?'}</div>
+          <button className={styles.searchBtn} onClick={() => setShowSearch(true)} title="Search notes (⌘K)">
+            🔍 <span className={styles.searchBtnLabel}>Search</span>
+          </button>
+          <button className={styles.roomBtn} onClick={() => setShowRoom(true)} title="Study Rooms">
+            👥
+          </button>
+          <div className={styles.avatar} onClick={() => setShowProfile(true)} title="Edit profile" style={{ cursor: 'pointer' }}>
+            {user?.name ? user.name[0].toUpperCase() : '?'}
+          </div>
           <span className={styles.userName}>{user?.name}</span>
+          <ThemeToggle />
+          <button className={styles.profileBtn} onClick={() => setShowProfile(true)}>Profile</button>
           <button className={styles.signOutBtn} onClick={onLogout}>Sign Out</button>
         </div>
       </header>

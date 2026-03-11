@@ -4,7 +4,19 @@ import styles from './AIAssistant.module.css'
 
 const DEFAULT_SYSTEM = `You are a helpful academic research assistant inside "Mogul's Learning Studio", a student's personal study website. Give clear, concise, well-structured answers. Use simple language when explaining concepts. When relevant, use examples. Keep responses focused and educational.`
 
-export default function AIAssistant({ user, systemPrompt }) {
+function buildSystemPrompt(basePrompt, notes, tasks) {
+  let prompt = basePrompt || DEFAULT_SYSTEM
+  const pendingTasks = (tasks || []).filter((t) => !t.done)
+  if (pendingTasks.length > 0) {
+    prompt += `\n\nThe student has ${pendingTasks.length} pending assignment(s): ${pendingTasks.slice(0, 5).map((t) => `"${t.title}" (due ${t.due})`).join(', ')}${pendingTasks.length > 5 ? `, and ${pendingTasks.length - 5} more` : ''}. You can reference these when relevant.`
+  }
+  if (notes && notes.length > 0) {
+    prompt += `\n\nThe student has ${notes.length} saved note(s) titled: ${notes.slice(0, 5).map((n) => `"${n.title}"`).join(', ')}${notes.length > 5 ? `, and ${notes.length - 5} more` : ''}. You can reference these when asked about their notes.`
+  }
+  return prompt
+}
+
+export default function AIAssistant({ user, systemPrompt, contextNotes, contextTasks }) {
   const firstName = user?.name?.split(' ')[0] || 'Scholar'
   const initials  = user?.name ? user.name[0].toUpperCase() : '?'
 
@@ -37,7 +49,7 @@ export default function AIAssistant({ user, systemPrompt }) {
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
           max_tokens: 1000,
-          system: systemPrompt || DEFAULT_SYSTEM,
+          system: buildSystemPrompt(systemPrompt, contextNotes, contextTasks),
           messages: history,
         }),
       })

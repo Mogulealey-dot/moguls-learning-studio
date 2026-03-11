@@ -62,7 +62,7 @@ function MaterialsSection({ prefix, studioName }) {
         <h2 className="section-title">Study <em>Materials</em></h2>
         <div className="divider" />
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24 }}>
+      <div className={gs.materialsGrid}>
         <UploadCard icon="📚" title="Class Notes"      desc={`Upload lecture notes, PDFs, and study guides for ${studioName}.`}  storageKey={`${prefix}_upload_notes`} />
         <UploadCard icon="📝" title="Past Papers"      desc="Store past exam papers and practice questions to review from."        storageKey={`${prefix}_upload_papers`} />
         <UploadCard icon="🏆" title="Results & Grades" desc="Keep track of grade reports, transcripts, and assignment scores."      storageKey={`${prefix}_upload_results`} />
@@ -74,6 +74,8 @@ function MaterialsSection({ prefix, studioName }) {
 export default function GenericStudio({ config, user, onLogout, onBack }) {
   const [activeSection, setActiveSection] = useState('home')
   const { ToolsComponent, storagePrefix, name, color, icon, heroTitle, heroSub, subjects, navLinks, aiSystemPrompt } = config
+  const [contextNotes] = useUserData(`${storagePrefix}_notes`, [])
+  const [contextTasks] = useUserData(`${storagePrefix}_tasks`, [])
 
   const scrollTo = (id) => {
     const el = document.getElementById(id)
@@ -128,13 +130,13 @@ export default function GenericStudio({ config, user, onLogout, onBack }) {
 
       <PomodoroTimer storageKey={`${storagePrefix}_pomodoro`} />
 
-      <GradeCalculator defaultSubjects={subjects.slice(0, 2)} />
+      <GradeCalculator defaultSubjects={subjects.slice(0, 2)} storageKey={`${storagePrefix}_grades`} />
 
       <MaterialsSection prefix={storagePrefix} studioName={name} />
 
       <NotesApp storageKey={`${storagePrefix}_notes`} />
 
-      <AIAssistant user={user} systemPrompt={aiSystemPrompt} />
+      <AIAssistant user={user} systemPrompt={aiSystemPrompt} contextNotes={contextNotes} contextTasks={contextTasks} />
 
       <Footer />
     </div>
