@@ -7,6 +7,24 @@
   display: flex; align-items: center;
   padding: 0 40px; gap: 16px;
 }
+.left {
+  display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+}
+.backBtn {
+  background: none;
+  border: 1px solid rgba(201,168,76,0.25);
+  color: var(--mist);
+  padding: 5px 12px;
+  border-radius: 3px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+  white-space: nowrap;
+}
+.backBtn:hover { border-color: var(--gold); color: var(--gold); }
 .brand {
   font-family: 'Playfair Display', serif;
   font-weight: 900; font-size: 20px;
