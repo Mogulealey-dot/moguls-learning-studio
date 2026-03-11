@@ -1,10 +1,14 @@
-import MathTools        from './studios/MathTools'
-import CSTools          from './studios/CSTools'
-import PhilosophyTools  from './studios/PhilosophyTools'
-import ScienceTools     from './studios/ScienceTools'
-import LiteratureTools  from './studios/LiteratureTools'
-import HistoryTools     from './studios/HistoryTools'
-import ArtsTools        from './studios/ArtsTools'
+import MathTools               from './studios/MathTools'
+import CSTools                 from './studios/CSTools'
+import PhilosophyTools         from './studios/PhilosophyTools'
+import ScienceTools            from './studios/ScienceTools'
+import LiteratureTools         from './studios/LiteratureTools'
+import HistoryTools            from './studios/HistoryTools'
+import ArtsTools               from './studios/ArtsTools'
+import AccountingTools         from './studios/AccountingTools'
+import EconomicsTools          from './studios/EconomicsTools'
+import MathCalculatorTools     from './studios/MathCalculatorTools'
+import AccountingFormulasTools from './studios/AccountingFormulasTools'
 
 const STUDIO_CONFIGS = {
   mathematics: {
@@ -104,6 +108,62 @@ const STUDIO_CONFIGS = {
     navLinks:      [['tools','🎨 Tools'], ['tasks','✅ Tasks'], ['pomodoro','🍅 Timer'], ['grades','🎓 Grades'], ['materials','📚 Files'], ['notes','📓 Notes'], ['ai','AI ✦']],
     aiSystemPrompt: 'You are a helpful arts and design tutor inside "Mogul\'s Learning Studio". Assist with visual art, graphic design, UX/UI design, art history, photography, typography, colour theory, and design principles. Provide thoughtful creative guidance, explain design concepts clearly, and help students develop their aesthetic sensibility and critical eye.',
     ToolsComponent: ArtsTools,
+  },
+  accounting: {
+    id:            'accounting',
+    name:          'Accounting',
+    icon:          '📒',
+    color:         '#27ae60',
+    subtitle:      'Financial Reporting & Analysis',
+    heroTitle:     ['Balance the Books,', 'Master the Numbers'],
+    heroSub:       'Financial ratios, depreciation schedules, break-even analysis, and journal entry builder — everything you need to excel in accounting.',
+    storagePrefix: 'mls_acct',
+    subjects:      ['Financial Accounting', 'Management Accounting', 'Auditing', 'Taxation', 'Cost Accounting', 'Other'],
+    navLinks:      [['tools','📒 Tools'], ['tasks','✅ Tasks'], ['pomodoro','🍅 Timer'], ['grades','🎓 Grades'], ['materials','📚 Files'], ['notes','📓 Notes'], ['ai','AI ✦']],
+    aiSystemPrompt: 'You are a helpful accounting tutor inside "Mogul\'s Learning Studio". Assist with financial accounting, management accounting, auditing, taxation, cost accounting, and financial reporting. Explain double-entry bookkeeping, financial statements, ratio analysis, and costing methods clearly with worked examples. Follow IFRS/IAS standards where applicable.',
+    ToolsComponent: AccountingTools,
+  },
+  economics: {
+    id:            'economics',
+    name:          'Economics',
+    icon:          '📈',
+    color:         '#f39c12',
+    subtitle:      'Micro & Macroeconomics',
+    heroTitle:     ['Understand Markets,', 'Shape Policy'],
+    heroSub:       'GDP, elasticity, market equilibrium, fiscal multipliers — your complete economics toolkit for micro and macro analysis.',
+    storagePrefix: 'mls_econ',
+    subjects:      ['Microeconomics', 'Macroeconomics', 'International Economics', 'Development Economics', 'Econometrics', 'Other'],
+    navLinks:      [['tools','📈 Tools'], ['tasks','✅ Tasks'], ['pomodoro','🍅 Timer'], ['grades','🎓 Grades'], ['materials','📚 Files'], ['notes','📓 Notes'], ['ai','AI ✦']],
+    aiSystemPrompt: 'You are a helpful economics tutor inside "Mogul\'s Learning Studio". Assist with microeconomics, macroeconomics, international trade, development economics, and econometrics. Explain supply and demand, market structures, GDP, inflation, fiscal and monetary policy, and elasticity clearly. Use diagrams, real-world examples, and structured explanations.',
+    ToolsComponent: EconomicsTools,
+  },
+  mathcalc: {
+    id:            'mathcalc',
+    name:          'Math Calculator',
+    icon:          '🧮',
+    color:         '#3498db',
+    subtitle:      'Scientific Calculator & Solvers',
+    heroTitle:     ['Calculate with Precision,', 'Solve with Confidence'],
+    heroSub:       'Full scientific calculator, equation solver (quadratic, simultaneous, cubic), and sequence generator — the mathematician\'s power toolkit.',
+    storagePrefix: 'mls_calc',
+    subjects:      ['Calculus', 'Algebra', 'Statistics', 'Pure Mathematics', 'Applied Mathematics', 'Other'],
+    navLinks:      [['tools','🧮 Tools'], ['tasks','✅ Tasks'], ['pomodoro','🍅 Timer'], ['grades','🎓 Grades'], ['materials','📚 Files'], ['notes','📓 Notes'], ['ai','AI ✦']],
+    aiSystemPrompt: 'You are a helpful mathematics calculator assistant inside "Mogul\'s Learning Studio". Help users understand how to use scientific calculators, solve equations algebraically and numerically, work with sequences and series, and apply mathematical concepts. Show step-by-step working for all calculations and explain the underlying theory.',
+    ToolsComponent: MathCalculatorTools,
+  },
+  accountingformulas: {
+    id:            'accountingformulas',
+    name:          'Accounting Formulas',
+    icon:          '📐',
+    color:         '#1abc9c',
+    subtitle:      'Formulas, Ratios & Statement Builder',
+    heroTitle:     ['Every Formula', 'at Your Fingertips'],
+    heroSub:       '30+ accounting formulas, a comprehensive ratio calculator across all 5 ratio groups, and an interactive income statement & balance sheet builder.',
+    storagePrefix: 'mls_acctf',
+    subjects:      ['Financial Ratios', 'Financial Statements', 'Valuation', 'Depreciation', 'Inventory', 'Other'],
+    navLinks:      [['tools','📐 Tools'], ['tasks','✅ Tasks'], ['pomodoro','🍅 Timer'], ['grades','🎓 Grades'], ['materials','📚 Files'], ['notes','📓 Notes'], ['ai','AI ✦']],
+    aiSystemPrompt: 'You are a helpful financial accounting formulas assistant inside "Mogul\'s Learning Studio". Help users understand and apply accounting formulas, ratio analysis, financial statement construction, and valuation methods. Explain what each ratio means, what benchmarks indicate good performance, and how financial statements connect to each other. Follow IFRS standards.',
+    ToolsComponent: AccountingFormulasTools,
   },
 }
 

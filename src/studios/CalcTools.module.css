@@ -1,0 +1,154 @@
+.calcWrap {
+  max-width: 420px;
+}
+
+.display {
+  background: rgba(13,13,13,0.8);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 6px 6px 0 0;
+  padding: 16px 20px 12px;
+  text-align: right;
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.expression {
+  font-size: 12px;
+  color: rgba(138,155,176,0.6);
+  font-family: 'DM Mono', monospace;
+  min-height: 18px;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mainDisplay {
+  font-family: 'DM Mono', monospace;
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.memIndicator {
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  margin-top: 4px;
+}
+
+.modeRow {
+  display: flex;
+  border: 1px solid rgba(201,168,76,0.15);
+  border-top: none;
+}
+
+.modeBtn {
+  flex: 1;
+  background: rgba(245,240,232,0.03);
+  border: none;
+  color: var(--mist);
+  padding: 6px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.modeBtn + .modeBtn {
+  border-left: 1px solid rgba(201,168,76,0.15);
+}
+
+.modeBtnActive {
+  background: rgba(201,168,76,0.12);
+  color: var(--gold);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: rgba(245,240,232,0.05);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  overflow: hidden;
+}
+
+.btn {
+  background: rgba(20,20,20,0.95);
+  border: none;
+  color: var(--mist);
+  padding: 14px 8px;
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+  line-height: 1;
+}
+
+.btn:hover {
+  background: rgba(245,240,232,0.08);
+  color: var(--cream);
+}
+
+.btnFn {
+  color: var(--cream);
+  font-size: 11px;
+  background: rgba(245,240,232,0.04);
+}
+
+.btnMem {
+  color: #4a9eca;
+  font-size: 11px;
+  background: rgba(74,158,202,0.06);
+}
+
+.btnOp {
+  color: var(--gold);
+  background: rgba(201,168,76,0.08);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.btnOp:hover {
+  background: rgba(201,168,76,0.18);
+  color: var(--gold);
+}
+
+.btnEq {
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 700;
+  grid-row: span 2;
+}
+
+.btnEq:hover {
+  opacity: 0.9;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--ink);
+}
+
+.btnAC {
+  background: rgba(139,31,47,0.15);
+  color: #e05c6e;
+  font-weight: 600;
+}
+
+.btnAC:hover {
+  background: rgba(139,31,47,0.25);
+  color: #e05c6e;
+}
+
+.btnZero {
+  grid-column: span 2;
+}
