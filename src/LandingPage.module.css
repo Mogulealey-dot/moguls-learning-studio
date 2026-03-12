@@ -558,5 +558,14 @@
   .profileBtn { display: none; }
   .searchBtnLabel { display: none; }
   .grid { grid-template-columns: 1fr; }
-  .heroTitle { font-size: 38px; }
+  .heroTitle { font-size: 32px; }
+  .heroSub { font-size: 14px; }
+  .card { padding: 24px 20px; }
+  .cardName { font-size: 17px; }
+  .enterBtn { padding: 11px 16px; font-size: 13px; }
+}
+
+@media (max-width: 400px) {
+  .header { padding: 0 12px; gap: 6px; }
+  .signOutBtn, .roomBtn { display: none; }
 }

@@ -25,3 +25,12 @@
 .sendBtn { background: linear-gradient(135deg, var(--emerald), var(--emerald-light)); border: none; color: var(--cream); width: 44px; height: 44px; border-radius: 6px; font-size: 18px; cursor: pointer; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .sendBtn:hover { opacity: 0.85; }
 .sendBtn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+@media (max-width: 600px) {
+  .container { padding: 0; }
+  .bubble { max-width: 88%; font-size: 13px; }
+  .messages { min-height: 220px; max-height: 380px; padding: 16px; }
+  .chips { padding: 0 12px 12px; gap: 6px; }
+  .chip { font-size: 11px; padding: 5px 10px; }
+  .inputRow { padding: 12px; gap: 8px; }
+}

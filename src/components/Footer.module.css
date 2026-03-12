@@ -17,3 +17,7 @@
   .top { grid-template-columns: 1fr; gap: 32px; padding: 40px 24px; }
   .bottom { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
 }
+
+@media (max-width: 600px) {
+  .bottom { padding: 20px 16px; flex-direction: column; gap: 6px; text-align: center; }
+}

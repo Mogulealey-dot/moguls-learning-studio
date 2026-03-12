@@ -9,6 +9,7 @@ export default function GenericNavbar({ user, onLogout, onBack, scrollTo, active
   const [showProfile, setShowProfile] = useState(false)
   const [showSearch, setShowSearch] = useState(false)
   const [showRoom, setShowRoom] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [open, setOpen] = useState(false)
   const ref = useRef()
@@ -35,7 +36,7 @@ export default function GenericNavbar({ user, onLogout, onBack, scrollTo, active
     ? links.filter(([, label]) => label.toLowerCase().includes(query.toLowerCase()))
     : []
 
-  const go = (id) => { scrollTo(id); setQuery(''); setOpen(false) }
+  const go = (id) => { scrollTo(id); setQuery(''); setOpen(false); setMenuOpen(false) }
 
   return (
     <>
@@ -114,8 +115,31 @@ export default function GenericNavbar({ user, onLogout, onBack, scrollTo, active
         <ThemeToggle />
         <button className={styles.signOut} onClick={() => setShowProfile(true)}>Profile</button>
         <button className={styles.signOut} onClick={onLogout}>Sign Out</button>
+        <button className={styles.hamburger} onClick={() => setMenuOpen((v) => !v)} aria-label="Menu">
+          {menuOpen ? '✕' : '☰'}
+        </button>
       </div>
     </nav>
+
+    {menuOpen && (
+      <div className={styles.mobileMenu}>
+        {links.map(([id, label]) => {
+          const count = navBadges[id]
+          return (
+            <div
+              key={id}
+              className={`${styles.mobileLink} ${activeSection === id ? styles.mobileLinkActive : ''}`}
+              onClick={() => go(id)}
+            >
+              {label}
+              {(count > 0 || count === '▶') && (
+                <span className={id === 'tasks' ? styles.mobileBadgeTasks : styles.mobileBadge}>{count}</span>
+              )}
+            </div>
+          )
+        })}
+      </div>
+    )}
     </>
   )
 }

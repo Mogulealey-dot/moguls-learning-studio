@@ -160,9 +160,60 @@
 }
 .signOut:hover { border-color: var(--gold); color: var(--gold); }
 
+.hamburger {
+  display: none;
+  background: none; border: 1px solid rgba(201,168,76,0.2);
+  color: var(--cream); font-size: 18px; cursor: pointer;
+  padding: 5px 10px; border-radius: 4px;
+  transition: all 0.2s; flex-shrink: 0;
+  font-family: 'DM Sans', sans-serif; line-height: 1;
+}
+.hamburger:hover { border-color: var(--gold); color: var(--gold); }
+
+.mobileMenu {
+  position: fixed; top: 70px; left: 0; right: 0;
+  background: rgba(13,13,13,0.98);
+  border-bottom: 1px solid rgba(201,168,76,0.2);
+  backdrop-filter: blur(20px);
+  z-index: 99;
+  display: flex; flex-direction: column;
+  padding: 8px 0;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+.mobileLink {
+  padding: 14px 24px;
+  font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--mist); cursor: pointer;
+  transition: all 0.15s;
+  display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid rgba(245,240,232,0.04);
+}
+.mobileLink:last-child { border-bottom: none; }
+.mobileLink:hover { color: var(--gold); background: rgba(201,168,76,0.05); }
+.mobileLinkActive { color: var(--gold); }
+.mobileBadge {
+  margin-left: auto;
+  background: rgba(201,168,76,0.15); color: var(--gold);
+  border: 1px solid rgba(201,168,76,0.3); border-radius: 10px;
+  padding: 1px 8px; font-size: 11px; font-weight: 700; letter-spacing: 0;
+}
+.mobileBadgeTasks {
+  margin-left: auto;
+  background: rgba(139,31,47,0.2); color: #e05c6e;
+  border: 1px solid rgba(139,31,47,0.4); border-radius: 10px;
+  padding: 1px 8px; font-size: 11px; font-weight: 700; letter-spacing: 0;
+}
+
 @media (max-width: 900px) {
   .links { display: none; }
   .userName { display: none; }
   .searchInput { width: 140px; }
   .navbar { padding: 0 16px; gap: 8px; }
+  .hamburger { display: flex; align-items: center; }
+  .searchWrap { display: none; }
+}
+@media (max-width: 480px) {
+  .backBtn { font-size: 10px; padding: 4px 8px; }
+  .brand { font-size: 16px; }
+  .roomBtn { display: none; }
 }

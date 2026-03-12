@@ -68,41 +68,63 @@ const NAV_LINKS = [
 ]
 
 export default function Navbar({ user, onLogout, onBack, scrollTo, activeSection }) {
-  return (
-    <nav className={styles.navbar}>
-      <div className={styles.left}>
-        {onBack && (
-          <button className={styles.backBtn} onClick={onBack} title="Back to all studios">
-            ‹ Studios
-          </button>
-        )}
-        <div className={styles.brand}>
-          <em>Finance</em> Studio
-        </div>
-      </div>
+  const [menuOpen, setMenuOpen] = useState(false)
+  const go = (id) => { scrollTo(id); setMenuOpen(false) }
 
-      <ul className={styles.links}>
-        {NAV_LINKS.map(([id, label]) => (
-          <li key={id}>
-            <a
-              className={activeSection === id ? styles.active : ''}
-              onClick={() => scrollTo(id)}
+  return (
+    <>
+      <nav className={styles.navbar}>
+        <div className={styles.left}>
+          {onBack && (
+            <button className={styles.backBtn} onClick={onBack} title="Back to all studios">
+              ‹ Studios
+            </button>
+          )}
+          <div className={styles.brand}>
+            <em>Finance</em> Studio
+          </div>
+        </div>
+
+        <ul className={styles.links}>
+          {NAV_LINKS.map(([id, label]) => (
+            <li key={id}>
+              <a
+                className={activeSection === id ? styles.active : ''}
+                onClick={() => scrollTo(id)}
+              >
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        <NavSearch scrollTo={scrollTo} />
+
+        <div className={styles.userArea}>
+          <div className={styles.avatar}>
+            {user?.name ? user.name[0].toUpperCase() : '?'}
+          </div>
+          <span className={styles.userName}>{user?.name}</span>
+          <button className={styles.signOut} onClick={onLogout}>Sign Out</button>
+          <button className={styles.hamburger} onClick={() => setMenuOpen((v) => !v)} aria-label="Menu">
+            {menuOpen ? '✕' : '☰'}
+          </button>
+        </div>
+      </nav>
+
+      {menuOpen && (
+        <div className={styles.mobileMenu}>
+          {NAV_LINKS.map(([id, label]) => (
+            <div
+              key={id}
+              className={`${styles.mobileLink} ${activeSection === id ? styles.mobileLinkActive : ''}`}
+              onClick={() => go(id)}
             >
               {label}
-            </a>
-          </li>
-        ))}
-      </ul>
-
-      <NavSearch scrollTo={scrollTo} />
-
-      <div className={styles.userArea}>
-        <div className={styles.avatar}>
-          {user?.name ? user.name[0].toUpperCase() : '?'}
+            </div>
+          ))}
         </div>
-        <span className={styles.userName}>{user?.name}</span>
-        <button className={styles.signOut} onClick={onLogout}>Sign Out</button>
-      </div>
-    </nav>
+      )}
+    </>
   )
 }

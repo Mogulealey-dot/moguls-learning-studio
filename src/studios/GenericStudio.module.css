@@ -138,3 +138,10 @@
   .materialsGrid { grid-template-columns: 1fr; }
   .quoteLabel { display: none; }
 }
+
+@media (max-width: 480px) {
+  .statsRow { grid-template-columns: 1fr 1fr; padding: 20px 16px 0; gap: 10px; }
+  .statCard { padding: 14px 12px; }
+  .statNum { font-size: 28px; }
+  .materialsGrid { grid-template-columns: 1fr; }
+}

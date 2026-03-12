@@ -42,3 +42,11 @@
 .day:hover:not(.empty):not(.other) { background: rgba(201,168,76,0.1); color: var(--gold); }
 .today { background: var(--gold); color: var(--ink); font-weight: 700; }
 .other { color: rgba(245,240,232,0.2); cursor: default; }
+
+@media (max-width: 600px) {
+  .card { max-width: 100%; }
+  .header { padding: 18px 16px; }
+  .monthYear { font-size: 18px; }
+  .weekdays div { padding: 8px 2px; font-size: 9px; }
+  .day { min-height: 36px; font-size: 12px; padding: 4px 2px; }
+}

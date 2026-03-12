@@ -13,3 +13,10 @@
 .cellToday { outline: 1.5px solid var(--gold); outline-offset: 1px; }
 .legend { display: flex; align-items: center; gap: 3px; }
 .legendLabel { font-size: 10px; color: var(--mist); margin: 0 4px; }
+
+@media (max-width: 600px) {
+  .summary { grid-template-columns: repeat(2,1fr); gap: 8px; }
+  .summaryNum { font-size: 20px; }
+  .cell { width: 10px; height: 10px; }
+  .monthCell { width: 10px; font-size: 8px; }
+}

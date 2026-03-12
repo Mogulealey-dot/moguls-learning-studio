@@ -157,5 +157,10 @@ a { text-decoration: none; cursor: pointer; }
 }
 
 @media (max-width: 600px) {
-  .section { padding: 48px 16px; }
+  .section { padding: 40px 16px; }
+  .section-header { margin-bottom: 32px; }
+}
+
+@media (max-width: 400px) {
+  .section { padding: 32px 12px; }
 }
