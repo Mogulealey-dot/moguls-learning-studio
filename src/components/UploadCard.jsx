@@ -21,6 +21,7 @@ export default function UploadCard({ icon, title, desc, storageKey }) {
   const [uploading, setUploading] = useState(false)
   const [progress, setProgress]   = useState(0)
   const [dragging, setDragging]   = useState(false)
+  const [dragIndex, setDragIndex] = useState(null)
   const inputRef = useRef()
 
   const addFiles = async (fileList) => {
@@ -40,7 +41,7 @@ export default function UploadCard({ icon, title, desc, storageKey }) {
           reject,
           async () => {
             const url = await getDownloadURL(task.snapshot.ref)
-            uploaded.push({ id, name: f.name, size: f.size, type: f.type, date: new Date().toLocaleDateString(), url, storagePath })
+            uploaded.push({ id, name: f.name, size: f.size, type: f.type, date: new Date().toLocaleDateString(), url, storagePath, openCount: 0 })
             resolve()
           }
         )
@@ -52,9 +53,29 @@ export default function UploadCard({ icon, title, desc, storageKey }) {
     setProgress(0)
   }
 
+  const openFile = (file) => {
+    if (file.url) {
+      window.open(file.url, '_blank')
+      const updated = files
+        .map((f) => f.id === file.id ? { ...f, openCount: (f.openCount || 0) + 1 } : f)
+        .sort((a, b) => (b.openCount || 0) - (a.openCount || 0))
+      setFiles(updated)
+    }
+  }
+
   const removeFile = async (file) => {
     try { await deleteObject(ref(storage, file.storagePath)) } catch { /* already deleted */ }
     setFiles(files.filter((f) => f.id !== file.id))
+  }
+
+  const handleDragStart = (index) => setDragIndex(index)
+  const handleDrop = (index) => {
+    if (dragIndex === null || dragIndex === index) return
+    const updated = [...files]
+    const [moved] = updated.splice(dragIndex, 1)
+    updated.splice(index, 0, moved)
+    setFiles(updated)
+    setDragIndex(null)
   }
 
   return (
@@ -91,16 +112,26 @@ export default function UploadCard({ icon, title, desc, storageKey }) {
 
       {files.length > 0 && (
         <div className={styles.fileList}>
-          {files.map((f) => (
-            <div key={f.id} className={styles.fileItem}>
+          {files.map((f, index) => (
+            <div
+              key={f.id}
+              className={`${styles.fileItem} ${dragIndex === index ? styles.draggingItem : ''}`}
+              draggable
+              onDragStart={() => handleDragStart(index)}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={() => handleDrop(index)}
+              onDragEnd={() => setDragIndex(null)}
+            >
+              <span className={styles.dragHandle} title="Drag to reorder">⠿</span>
               <span className={styles.fileIcon}>{fileIcon(f.type)}</span>
               <span className={styles.fileName} title={f.name}>{f.name}</span>
               <span className={styles.fileSize}>{fmtSize(f.size)}</span>
-              <button
-                className={styles.openBtn}
-                onClick={() => f.url && window.open(f.url, '_blank')}
-                title="Open file"
-              >↗</button>
+              {(f.openCount > 0) && (
+                <span className={styles.openCount} title={`Opened ${f.openCount} time${f.openCount !== 1 ? 's' : ''}`}>
+                  {f.openCount}×
+                </span>
+              )}
+              <button className={styles.openBtn} onClick={() => openFile(f)} title="Open file">↗</button>
               <button className={styles.deleteBtn} onClick={() => removeFile(f)} title="Remove">✕</button>
             </div>
           ))}

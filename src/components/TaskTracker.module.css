@@ -34,6 +34,20 @@
 .dueDate { font-size: 11px; color: var(--mist); font-family: 'DM Mono', monospace; }
 .removeBtn { background: none; border: none; color: rgba(138,155,176,0.4); cursor: pointer; font-size: 13px; transition: color 0.2s; padding: 2px 4px; }
 .removeBtn:hover { color: var(--crimson); }
+.timer {
+  font-size: 11px; font-family: 'DM Mono', monospace;
+  color: var(--gold); background: rgba(201,168,76,0.1);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 10px; padding: 2px 8px;
+  letter-spacing: 0.03em;
+}
+.timerDone {
+  font-size: 11px; font-family: 'DM Mono', monospace;
+  color: var(--emerald-light); background: rgba(46,204,113,0.08);
+  border: 1px solid rgba(46,204,113,0.2);
+  border-radius: 10px; padding: 2px 8px;
+  letter-spacing: 0.03em;
+}
 @media (max-width: 900px) {
   .summary { grid-template-columns: repeat(2,1fr); }
   .formGrid { grid-template-columns: 1fr; }

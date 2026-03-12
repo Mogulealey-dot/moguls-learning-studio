@@ -72,18 +72,24 @@ function MaterialsSection({ prefix, studioName }) {
 }
 
 export default function GenericStudio({ config, user, onLogout, onBack }) {
-  const [activeSection, setActiveSection] = useState('home')
+  const [activeSection, setActiveSection]   = useState('home')
+  const [pomodoroRunning, setPomodoroRunning] = useState(false)
   const { ToolsComponent, storagePrefix, name, color, icon, heroTitle, heroSub, subjects, navLinks, aiSystemPrompt } = config
-  const [contextNotes]    = useUserData(`${storagePrefix}_notes`, [])
-  const [contextTasks]    = useUserData(`${storagePrefix}_tasks`, [])
-  const [contextPomodoro] = useUserData(`${storagePrefix}_pomodoro`, [])
-  const [contextUploads]  = useUserData(`${storagePrefix}_upload_notes`, [])
+  const [contextNotes]         = useUserData(`${storagePrefix}_notes`, [])
+  const [contextTasks]         = useUserData(`${storagePrefix}_tasks`, [])
+  const [contextPomodoro]      = useUserData(`${storagePrefix}_pomodoro`, [])
+  const [contextUploads]       = useUserData(`${storagePrefix}_upload_notes`, [])
+  const [contextUploadPapers]  = useUserData(`${storagePrefix}_upload_papers`, [])
+  const [contextUploadResults] = useUserData(`${storagePrefix}_upload_results`, [])
+
+  const totalFiles = contextUploads.length + contextUploadPapers.length + contextUploadResults.length
+  const todaySessions = contextPomodoro.filter((s) => s.date === new Date().toLocaleDateString()).length
 
   const navBadges = {
     tasks:     contextTasks.filter((t) => !t.done).length,
     notes:     contextNotes.length,
-    pomodoro:  contextPomodoro.filter((s) => s.date === new Date().toLocaleDateString()).length,
-    materials: contextUploads.length,
+    pomodoro:  pomodoroRunning ? '▶' : (todaySessions || 0),
+    materials: totalFiles,
   }
 
   const scrollTo = (id) => {
@@ -138,7 +144,7 @@ export default function GenericStudio({ config, user, onLogout, onBack }) {
         subjects={subjects}
       />
 
-      <PomodoroTimer storageKey={`${storagePrefix}_pomodoro`} />
+      <PomodoroTimer storageKey={`${storagePrefix}_pomodoro`} onRunningChange={setPomodoroRunning} />
 
       <GradeCalculator defaultSubjects={subjects.slice(0, 2)} storageKey={`${storagePrefix}_grades`} />
 

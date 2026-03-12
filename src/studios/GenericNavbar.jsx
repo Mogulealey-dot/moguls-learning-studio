@@ -57,7 +57,11 @@ export default function GenericNavbar({ user, onLogout, onBack, scrollTo, active
       <ul className={styles.links}>
         {links.map(([id, label]) => {
           const count = navBadges[id]
-          const badgeType = id === 'tasks' ? styles.badgeTasks : styles.badge
+          const badgeType = id === 'tasks'
+            ? styles.badgeTasks
+            : count === '▶'
+              ? styles.badgeRunning
+              : styles.badge
           return (
             <li key={id}>
               <a
@@ -65,7 +69,7 @@ export default function GenericNavbar({ user, onLogout, onBack, scrollTo, active
                 onClick={() => scrollTo(id)}
               >
                 {label}
-                {count > 0 && <span className={badgeType}>{count}</span>}
+                {(count > 0 || count === '▶') && <span className={badgeType}>{count}</span>}
               </a>
             </li>
           )

@@ -24,7 +24,7 @@ const MODES = [
   { label: 'Long Break',  minutes: 15, color: 'var(--mist)' },
 ]
 
-export default function PomodoroTimer({ storageKey }) {
+export default function PomodoroTimer({ storageKey, onRunningChange }) {
   const key = storageKey || 'mls_pomodoro_sessions'
   const [modeIdx, setModeIdx]   = useState(0)
   const [seconds, setSeconds]   = useState(MODES[0].minutes * 60)
@@ -36,6 +36,9 @@ export default function PomodoroTimer({ storageKey }) {
 
   // Keep ref in sync so the interval closure can read latest sessions
   useEffect(() => { sessionsRef.current = sessions }, [sessions])
+
+  // Notify parent when running state changes
+  useEffect(() => { onRunningChange?.(running) }, [running]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (running) {

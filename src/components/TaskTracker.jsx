@@ -1,6 +1,35 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useUserData } from '../hooks/useUserData'
 import styles from './TaskTracker.module.css'
+
+function fmtDuration(ms) {
+  const s = Math.floor(Math.abs(ms) / 1000)
+  const d = Math.floor(s / 86400)
+  const h = Math.floor((s % 86400) / 3600)
+  const m = Math.floor((s % 3600) / 60)
+  const sec = s % 60
+  if (d > 0) return `${d}d ${h}h ${m}m`
+  if (h > 0) return `${h}h ${m}m`
+  if (m > 0) return `${m}m ${sec}s`
+  return `${sec}s`
+}
+
+function LiveTimer({ createdAt, done, completedAt }) {
+  const [now, setNow] = useState(Date.now())
+  const ref = useRef(null)
+
+  useEffect(() => {
+    if (done) return
+    ref.current = setInterval(() => setNow(Date.now()), 1000)
+    return () => clearInterval(ref.current)
+  }, [done])
+
+  if (!createdAt) return null
+  const elapsed = done ? (completedAt - createdAt) : (now - createdAt)
+  return done
+    ? <span className={styles.timerDone}>✓ {fmtDuration(elapsed)}</span>
+    : <span className={styles.timer}>⏱ {fmtDuration(elapsed)}</span>
+}
 
 const PRIORITIES = ['High', 'Medium', 'Low']
 const SUBJECTS_DEFAULT = ['Advanced Financial Management', 'Marketing', 'Economics', 'Statistics', 'Management', 'Other']
@@ -60,13 +89,15 @@ export default function TaskTracker({ storageKey, subjects }) {
 
   const addTask = () => {
     if (!form.title || !form.due) return
-    const t = { id: Date.now(), ...form, done: false, created: new Date().toLocaleDateString() }
+    const t = { id: Date.now(), ...form, done: false, created: new Date().toLocaleDateString(), createdAt: Date.now() }
     setTasks([t, ...tasks])
     setForm({ title: '', subject: SUBJECTS[0], due: '', priority: 'Medium', notes: '' })
     setShowForm(false)
   }
 
-  const toggle = (id) => setTasks(tasks.map((t) => t.id === id ? { ...t, done: !t.done } : t))
+  const toggle = (id) => setTasks(tasks.map((t) =>
+    t.id === id ? { ...t, done: !t.done, completedAt: !t.done ? Date.now() : null } : t
+  ))
   const remove = (id) => setTasks(tasks.filter((t) => t.id !== id))
 
   const filtered = tasks.filter((t) => {
@@ -180,6 +211,7 @@ export default function TaskTracker({ storageKey, subjects }) {
                   {t.done ? '✓ Done' : over ? `${Math.abs(dl)}d overdue` : dl === 0 ? 'Due today!' : `${dl}d left`}
                 </div>
                 <div className={styles.dueDate}>{new Date(t.due).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</div>
+                <LiveTimer createdAt={t.createdAt} done={t.done} completedAt={t.completedAt} />
                 <button className={styles.removeBtn} onClick={() => remove(t.id)}>✕</button>
               </div>
             </div>
