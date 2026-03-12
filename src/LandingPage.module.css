@@ -284,6 +284,19 @@
   line-height: 1.2;
 }
 
+.visitBadge {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent, var(--gold));
+  border: 1px solid var(--accent, var(--gold));
+  border-radius: 20px;
+  padding: 2px 8px;
+  opacity: 0.7;
+  margin-top: 2px;
+}
+
 .cardSubtitle {
   font-size: 11px;
   letter-spacing: 0.1em;

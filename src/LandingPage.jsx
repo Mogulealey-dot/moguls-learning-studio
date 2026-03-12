@@ -167,12 +167,20 @@ export default function LandingPage({ user, onLogout, onEnterStudio }) {
   const [showRoom, setShowRoom] = useState(false)
   const [showAddModal, setShowAddModal] = useState(false)
   const [hiddenStudios, setHiddenStudios] = useUserData('mls_hidden_studios', [])
+  const [visitCounts, setVisitCounts]     = useUserData('mls_studio_visits', {})
 
-  const visibleStudios = STUDIOS.filter((s) => !hiddenStudios.includes(s.id))
+  const visibleStudios = STUDIOS
+    .filter((s) => !hiddenStudios.includes(s.id))
+    .sort((a, b) => (visitCounts[b.id] || 0) - (visitCounts[a.id] || 0))
   const hiddenList = STUDIOS.filter((s) => hiddenStudios.includes(s.id))
 
   const hideStudio = (id) => setHiddenStudios((prev) => [...prev, id])
   const restoreStudio = (id) => setHiddenStudios((prev) => prev.filter((hid) => hid !== id))
+
+  const handleEnterStudio = (id) => {
+    setVisitCounts((prev) => ({ ...prev, [id]: (prev[id] || 0) + 1 }))
+    onEnterStudio(id)
+  }
 
   useEffect(() => {
     const handler = (e) => {
@@ -261,6 +269,9 @@ export default function LandingPage({ user, onLogout, onEnterStudio }) {
 
               <div className={styles.cardIcon}>{s.icon}</div>
               <h3 className={styles.cardName}>{s.name}</h3>
+              {visitCounts[s.id] > 0 && (
+                <span className={styles.visitBadge}>{visitCounts[s.id]} visit{visitCounts[s.id] !== 1 ? 's' : ''}</span>
+              )}
               <p className={styles.cardSubtitle}>{s.subtitle}</p>
               <p className={styles.cardDesc}>{s.desc}</p>
 
@@ -274,7 +285,7 @@ export default function LandingPage({ user, onLogout, onEnterStudio }) {
                 <button
                   className={styles.enterBtn}
                   style={{ background: `linear-gradient(135deg, ${s.color}, ${s.color}cc)` }}
-                  onClick={() => onEnterStudio(s.id)}
+                  onClick={() => handleEnterStudio(s.id)}
                 >
                   Enter Studio →
                 </button>
