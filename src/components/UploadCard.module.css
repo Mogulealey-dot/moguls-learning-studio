@@ -68,3 +68,21 @@
   transition: color 0.2s; flex-shrink: 0;
 }
 .deleteBtn:hover { color: var(--crimson); }
+
+@media (max-width: 600px) {
+  .card { padding: 20px 16px; }
+  .title { font-size: 17px; }
+  .dropzone { padding: 20px 12px; }
+  .dropHint { display: none; }
+  .dragHandle { display: none; }
+  .fileSize { display: none; }
+  .fileItem { padding: 8px 10px; gap: 6px; }
+  .fileName { font-size: 11px; }
+  .lastOpened { font-size: 9px; }
+}
+
+@media (max-width: 400px) {
+  .card { padding: 14px 12px; }
+  .openCount { display: none; }
+  .dropText { font-size: 12px; }
+}
