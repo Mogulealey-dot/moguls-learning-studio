@@ -5,6 +5,20 @@ import { useAuth } from '../contexts/AuthContext'
 import { useUserData } from '../hooks/useUserData'
 import styles from './UploadCard.module.css'
 
+function timeAgo(ts) {
+  if (!ts) return null
+  const diff = Date.now() - ts
+  const m = Math.floor(diff / 60000)
+  const h = Math.floor(diff / 3600000)
+  const d = Math.floor(diff / 86400000)
+  if (m < 1) return 'just now'
+  if (m < 60) return `${m}m ago`
+  if (h < 24) return `${h}h ago`
+  if (d === 1) return 'yesterday'
+  if (d < 30) return `${d}d ago`
+  return new Date(ts).toLocaleDateString()
+}
+
 function fileIcon(type) {
   if (type.includes('pdf'))   return '📄'
   if (type.includes('image')) return '🖼'
@@ -57,7 +71,7 @@ export default function UploadCard({ icon, title, desc, storageKey }) {
     if (file.url) {
       window.open(file.url, '_blank')
       const updated = files
-        .map((f) => f.id === file.id ? { ...f, openCount: (f.openCount || 0) + 1 } : f)
+        .map((f) => f.id === file.id ? { ...f, openCount: (f.openCount || 0) + 1, lastOpened: Date.now() } : f)
         .sort((a, b) => (b.openCount || 0) - (a.openCount || 0))
       setFiles(updated)
     }
@@ -124,7 +138,10 @@ export default function UploadCard({ icon, title, desc, storageKey }) {
             >
               <span className={styles.dragHandle} title="Drag to reorder">⠿</span>
               <span className={styles.fileIcon}>{fileIcon(f.type)}</span>
-              <span className={styles.fileName} title={f.name}>{f.name}</span>
+              <div className={styles.fileNameWrap}>
+                <span className={styles.fileName} title={f.name}>{f.name}</span>
+                {f.lastOpened && <span className={styles.lastOpened}>{timeAgo(f.lastOpened)}</span>}
+              </div>
               <span className={styles.fileSize}>{fmtSize(f.size)}</span>
               {(f.openCount > 0) && (
                 <span className={styles.openCount} title={`Opened ${f.openCount} time${f.openCount !== 1 ? 's' : ''}`}>

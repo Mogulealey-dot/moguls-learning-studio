@@ -53,3 +53,19 @@
   .formGrid { grid-template-columns: 1fr; }
   .task { flex-wrap: wrap; }
 }
+.progressBarWrap {
+  position: relative; height: 4px; background: rgba(245,240,232,0.07);
+  border-radius: 2px; overflow: visible; margin-top: 8px; display: flex; align-items: center;
+}
+.progressBarFill {
+  height: 100%; border-radius: 2px; transition: width 0.3s ease; min-width: 0;
+}
+.progressPct {
+  position: absolute; right: 0; top: -14px;
+  font-size: 10px; font-family: 'DM Mono', monospace;
+  color: var(--mist); white-space: nowrap;
+}
+.progressSlider {
+  width: 100%; margin-top: 6px; cursor: pointer;
+  accent-color: var(--gold); height: 3px;
+}

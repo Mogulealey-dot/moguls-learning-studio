@@ -297,6 +297,15 @@
   margin-top: 2px;
 }
 
+.lastVisited {
+  display: block;
+  font-size: 10px;
+  color: var(--mist);
+  opacity: 0.6;
+  margin-top: 3px;
+  letter-spacing: 0.04em;
+}
+
 .cardSubtitle {
   font-size: 11px;
   letter-spacing: 0.1em;

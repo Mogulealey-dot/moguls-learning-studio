@@ -129,6 +129,20 @@ const STUDIOS = [
   },
 ]
 
+function timeAgo(ts) {
+  if (!ts) return null
+  const diff = Date.now() - ts
+  const m = Math.floor(diff / 60000)
+  const h = Math.floor(diff / 3600000)
+  const d = Math.floor(diff / 86400000)
+  if (m < 1) return 'just now'
+  if (m < 60) return `${m}m ago`
+  if (h < 24) return `${h}h ago`
+  if (d === 1) return 'yesterday'
+  if (d < 30) return `${d}d ago`
+  return new Date(ts).toLocaleDateString()
+}
+
 function AddStudioModal({ hidden, onRestore, onClose }) {
   return (
     <div className={styles.modalOverlay} onClick={(e) => e.target === e.currentTarget && onClose()}>
@@ -168,6 +182,7 @@ export default function LandingPage({ user, onLogout, onEnterStudio }) {
   const [showAddModal, setShowAddModal] = useState(false)
   const [hiddenStudios, setHiddenStudios] = useUserData('mls_hidden_studios', [])
   const [visitCounts, setVisitCounts]     = useUserData('mls_studio_visits', {})
+  const [lastVisited, setLastVisited] = useUserData('mls_studio_last_visited', {})
 
   const visibleStudios = STUDIOS
     .filter((s) => !hiddenStudios.includes(s.id))
@@ -179,6 +194,7 @@ export default function LandingPage({ user, onLogout, onEnterStudio }) {
 
   const handleEnterStudio = (id) => {
     setVisitCounts((prev) => ({ ...prev, [id]: (prev[id] || 0) + 1 }))
+    setLastVisited((prev) => ({ ...prev, [id]: Date.now() }))
     onEnterStudio(id)
   }
 
@@ -271,6 +287,9 @@ export default function LandingPage({ user, onLogout, onEnterStudio }) {
               <h3 className={styles.cardName}>{s.name}</h3>
               {visitCounts[s.id] > 0 && (
                 <span className={styles.visitBadge}>{visitCounts[s.id]} visit{visitCounts[s.id] !== 1 ? 's' : ''}</span>
+              )}
+              {lastVisited[s.id] && (
+                <span className={styles.lastVisited}>🕐 {timeAgo(lastVisited[s.id])}</span>
               )}
               <p className={styles.cardSubtitle}>{s.subtitle}</p>
               <p className={styles.cardDesc}>{s.desc}</p>

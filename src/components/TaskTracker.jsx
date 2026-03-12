@@ -83,7 +83,7 @@ export default function TaskTracker({ storageKey, subjects }) {
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
   const [filter, setFilter]     = useState('all')
-  const [form, setForm]         = useState({ title: '', subject: SUBJECTS[0], due: '', priority: 'Medium', notes: '' })
+  const [form, setForm]         = useState({ title: '', subject: SUBJECTS[0], due: '', priority: 'Medium', notes: '', progress: 0 })
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
 
@@ -91,7 +91,7 @@ export default function TaskTracker({ storageKey, subjects }) {
     if (!form.title || !form.due) return
     const t = { id: Date.now(), ...form, done: false, created: new Date().toLocaleDateString(), createdAt: Date.now() }
     setTasks([t, ...tasks])
-    setForm({ title: '', subject: SUBJECTS[0], due: '', priority: 'Medium', notes: '' })
+    setForm({ title: '', subject: SUBJECTS[0], due: '', priority: 'Medium', notes: '', progress: 0 })
     setShowForm(false)
   }
 
@@ -99,6 +99,10 @@ export default function TaskTracker({ storageKey, subjects }) {
     t.id === id ? { ...t, done: !t.done, completedAt: !t.done ? Date.now() : null } : t
   ))
   const remove = (id) => setTasks(tasks.filter((t) => t.id !== id))
+
+  const updateProgress = (id, progress) => {
+    setTasks(tasks.map((t) => t.id === id ? { ...t, progress: Number(progress) } : t))
+  }
 
   const filtered = tasks.filter((t) => {
     if (filter === 'active')   return !t.done
@@ -176,6 +180,10 @@ export default function TaskTracker({ storageKey, subjects }) {
               <label>Notes (optional)</label>
               <input type="text" placeholder="Any extra details…" value={form.notes} onChange={set('notes')} />
             </div>
+            <div className="field-group" style={{ gridColumn: '1/-1' }}>
+              <label>Progress: {form.progress}%</label>
+              <input type="range" min="0" max="100" step="5" value={form.progress} onChange={set('progress')} className={styles.progressSlider} />
+            </div>
           </div>
           <button className="btn-primary" onClick={addTask} style={{ marginTop: 8 }}>Add Assignment →</button>
         </div>
@@ -205,6 +213,18 @@ export default function TaskTracker({ storageKey, subjects }) {
                   <span className={styles.priority} style={{ color: priorityColor(t.priority) }}>● {t.priority}</span>
                   {t.notes && <span className={styles.taskNotes}>{t.notes}</span>}
                 </div>
+                <div className={styles.progressBarWrap} title={`${t.progress || 0}% complete`}>
+                  <div className={styles.progressBarFill} style={{ width: `${t.progress || 0}%`, background: t.done ? 'var(--emerald-light)' : 'var(--accent, var(--gold))' }} />
+                  <span className={styles.progressPct}>{t.progress || 0}%</span>
+                </div>
+                <input
+                  type="range" min="0" max="100" step="5"
+                  value={t.progress || 0}
+                  onChange={(e) => updateProgress(t.id, e.target.value)}
+                  className={styles.progressSlider}
+                  onClick={(e) => e.stopPropagation()}
+                  style={{ display: t.done ? 'none' : undefined }}
+                />
               </div>
               <div className={styles.taskRight}>
                 <div className={`${styles.dueTag} ${over ? styles.overTag : soon ? styles.soonTag : ''}`}>

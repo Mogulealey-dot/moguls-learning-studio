@@ -1,0 +1,15 @@
+.wrap { display: flex; flex-direction: column; gap: 16px; }
+.summary { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 4px; }
+.summaryItem { background: rgba(245,240,232,0.03); border: 1px solid rgba(201,168,76,0.12); border-radius: 4px; padding: 14px 10px; text-align: center; }
+.summaryNum { display: block; font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 900; color: var(--gold); line-height: 1; margin-bottom: 4px; }
+.summaryLbl { font-size: 10px; color: var(--mist); letter-spacing: 0.08em; text-transform: uppercase; }
+.gridWrap { overflow-x: auto; padding-bottom: 4px; }
+.monthRow { display: flex; gap: 3px; margin-bottom: 4px; }
+.monthCell { width: 13px; font-size: 9px; color: var(--mist); letter-spacing: 0.04em; overflow: visible; white-space: nowrap; flex-shrink: 0; }
+.grid { display: flex; gap: 3px; }
+.week { display: flex; flex-direction: column; gap: 3px; }
+.cell { width: 13px; height: 13px; border-radius: 2px; background: rgba(245,240,232,0.06); flex-shrink: 0; transition: opacity 0.15s; }
+.cell:hover { opacity: 0.75; }
+.cellToday { outline: 1.5px solid var(--gold); outline-offset: 1px; }
+.legend { display: flex; align-items: center; gap: 3px; }
+.legendLabel { font-size: 10px; color: var(--mist); margin: 0 4px; }

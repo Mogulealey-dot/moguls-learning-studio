@@ -26,10 +26,12 @@ const MODES = [
 
 export default function PomodoroTimer({ storageKey, onRunningChange }) {
   const key = storageKey || 'mls_pomodoro_sessions'
+  const goalKey = key + '_goal'
   const [modeIdx, setModeIdx]   = useState(0)
   const [seconds, setSeconds]   = useState(MODES[0].minutes * 60)
   const [running, setRunning]   = useState(false)
   const [sessions, setSessions] = useUserData(key, [])
+  const [dailyGoal, setDailyGoal] = useUserData(goalKey, 3)
   const intervalRef = useRef(null)
   const sessionsRef = useRef(sessions)
   const mode = MODES[modeIdx]
@@ -135,9 +137,26 @@ export default function PomodoroTimer({ storageKey, onRunningChange }) {
         {/* Stats */}
         <div className={styles.statsPanel}>
           <div className={styles.statGrid}>
-            <div className={styles.statBox}>
-              <div className={styles.statNum} style={{ color: 'var(--gold)' }}>{todaySessions}</div>
-              <div className={styles.statLbl}>Sessions Today</div>
+            <div className={styles.statBox} style={{ gridColumn: 'span 2' }}>
+              <div className={styles.goalRow}>
+                <div>
+                  <div className={styles.statNum} style={{ color: 'var(--gold)' }}>
+                    {todaySessions} <span className={styles.goalOf}>/ {dailyGoal}</span>
+                  </div>
+                  <div className={styles.statLbl}>Sessions Today</div>
+                </div>
+                <div className={styles.goalControls}>
+                  <button className={styles.goalBtn} onClick={() => setDailyGoal((g) => Math.max(1, g - 1))}>−</button>
+                  <span className={styles.goalLabel}>Goal</span>
+                  <button className={styles.goalBtn} onClick={() => setDailyGoal((g) => Math.min(12, g + 1))}>+</button>
+                </div>
+              </div>
+              <div className={styles.goalBarWrap}>
+                <div className={styles.goalBar} style={{ width: `${Math.min(100, (todaySessions / dailyGoal) * 100)}%`, background: todaySessions >= dailyGoal ? 'var(--emerald-light)' : 'var(--gold)' }} />
+              </div>
+              {todaySessions >= dailyGoal && (
+                <div className={styles.goalReached}>🎯 Daily goal reached!</div>
+              )}
             </div>
             <div className={styles.statBox}>
               <div className={styles.statNum} style={{ color: 'var(--emerald-light)' }}>{sessions.length}</div>

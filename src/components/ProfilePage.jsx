@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { updateProfile, updateEmail, updatePassword, deleteUser, EmailAuthProvider, reauthenticateWithCredential } from 'firebase/auth'
 import { auth } from '../firebase'
 import styles from './ProfilePage.module.css'
+import { useAllSessions } from '../hooks/useAllSessions'
+import ActivityHeatmap from './ActivityHeatmap'
 
 export default function ProfilePage({ user, onClose, onLogout }) {
   const firebaseUser = auth.currentUser
@@ -16,6 +18,8 @@ export default function ProfilePage({ user, onClose, onLogout }) {
   const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
   const [showDelete, setShowDelete] = useState(false)
+
+  const allSessions = useAllSessions()
 
   const clear = () => { setError(''); setSuccess('') }
 
@@ -82,7 +86,7 @@ export default function ProfilePage({ user, onClose, onLogout }) {
 
   return (
     <div className={styles.overlay} onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className={styles.modal}>
+      <div className={`${styles.modal} ${tab === 'activity' ? styles.modalWide : ''}`}>
         <div className={styles.header}>
           <div className={styles.avatar}>{user?.name ? user.name[0].toUpperCase() : '?'}</div>
           <div>
@@ -93,7 +97,7 @@ export default function ProfilePage({ user, onClose, onLogout }) {
         </div>
 
         <div className={styles.tabs}>
-          {[['profile', 'Profile'], ['password', 'Password'], ['danger', 'Account']].map(([id, label]) => (
+          {[['profile', 'Profile'], ['activity', 'Activity'], ['password', 'Password'], ['danger', 'Account']].map(([id, label]) => (
             <button key={id} className={`${styles.tab} ${tab === id ? styles.tabActive : ''}`}
               onClick={() => { setTab(id); clear() }}>{label}</button>
           ))}
@@ -115,6 +119,12 @@ export default function ProfilePage({ user, onClose, onLogout }) {
             <button className={styles.saveBtn} onClick={saveProfile} disabled={loading}>
               {loading ? 'Saving…' : 'Save Changes'}
             </button>
+          </div>
+        )}
+
+        {tab === 'activity' && (
+          <div className={styles.body}>
+            <ActivityHeatmap sessions={allSessions} />
           </div>
         )}
 
