@@ -147,9 +147,16 @@ export default function TaskTracker({ storageKey, subjects }) {
             </button>
           ))}
         </div>
-        <button className={styles.addBtn} onClick={() => setShowForm((v) => !v)}>
-          {showForm ? '✕ Cancel' : '+ Add Assignment'}
-        </button>
+        <div className={styles.controlRight}>
+          {done > 0 && (
+            <button className={styles.clearBtn} onClick={() => setTasks(tasks.filter((t) => !t.done))}>
+              🗑 Clear Completed ({done})
+            </button>
+          )}
+          <button className={styles.addBtn} onClick={() => setShowForm((v) => !v)}>
+            {showForm ? '✕ Cancel' : '+ Add Assignment'}
+          </button>
+        </div>
       </div>
 
       {/* Add Form */}

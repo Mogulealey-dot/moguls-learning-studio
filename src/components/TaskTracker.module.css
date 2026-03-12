@@ -3,6 +3,9 @@
 .summaryNum { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 900; line-height: 1; margin-bottom: 6px; }
 .summaryLabel { font-size: 12px; color: var(--mist); letter-spacing: 0.05em; text-transform: uppercase; }
 .controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+.controlRight { display: flex; align-items: center; gap: 10px; }
+.clearBtn { background: rgba(139,31,47,0.12); border: 1px solid rgba(139,31,47,0.35); color: #e05c6e; padding: 10px 16px; border-radius: 4px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+.clearBtn:hover { background: rgba(139,31,47,0.25); border-color: var(--crimson); }
 .filters { display: flex; gap: 8px; }
 .filterBtn { background: rgba(245,240,232,0.04); border: 1px solid rgba(201,168,76,0.15); color: var(--mist); padding: 8px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
 .filterBtn:hover { border-color: rgba(201,168,76,0.4); color: var(--cream); }
