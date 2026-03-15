@@ -1,0 +1,37 @@
+.root { }
+
+.controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+.weekToggle { display: flex; gap: 8px; }
+.weekBtn { background: rgba(245,240,232,0.04); border: 1px solid rgba(201,168,76,0.15); color: var(--mist); padding: 8px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
+.weekBtn:hover { border-color: rgba(201,168,76,0.4); color: var(--cream); }
+.weekBtnActive { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.08); }
+.addBtn { background: linear-gradient(135deg, var(--emerald), var(--emerald-light)); border: none; color: var(--cream); padding: 10px 20px; border-radius: 4px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: opacity 0.2s; }
+.addBtn:hover { opacity: 0.85; }
+
+.weekTotal { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; color: var(--gold); }
+.weekTotalLabel { font-size: 12px; color: var(--mist); }
+
+.form { background: rgba(245,240,232,0.03); border: 1px solid rgba(201,168,76,0.2); border-radius: 4px; padding: 28px 32px; margin-bottom: 24px; }
+.formGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 24px; }
+.select { width: 100%; background: rgba(245,240,232,0.06); border: 1px solid rgba(201,168,76,0.2); border-radius: 3px; padding: 12px 16px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--cream); outline: none; }
+.select option { background: #1a1a1a; }
+.cancelBtn { background: rgba(245,240,232,0.06); border: 1px solid rgba(245,240,232,0.15); color: var(--mist); padding: 10px 20px; border-radius: 4px; font-size: 14px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+.formActions { display: flex; gap: 10px; margin-top: 16px; }
+
+.grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; overflow-x: auto; }
+.dayCol { min-width: 120px; }
+.dayHeader { text-align: center; padding: 10px 6px 14px; border-bottom: 1px solid rgba(201,168,76,0.15); margin-bottom: 8px; }
+.dayName { font-size: 13px; font-weight: 600; color: var(--cream); text-transform: uppercase; letter-spacing: 0.05em; }
+.dayHours { font-size: 11px; color: var(--mist); margin-top: 4px; }
+
+.block { border-radius: 4px; padding: 8px 10px; margin-bottom: 6px; position: relative; font-size: 12px; }
+.blockSubject { font-weight: 600; color: #fff; margin-bottom: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.blockTime { font-size: 11px; opacity: 0.85; font-family: 'DM Mono', monospace; }
+.blockType { font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.75; margin-top: 2px; }
+.blockDelete { position: absolute; top: 4px; right: 4px; background: none; border: none; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 11px; line-height: 1; padding: 0; }
+.blockDelete:hover { color: #fff; }
+
+.empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 60px; color: var(--mist); text-align: center; opacity: 0.6; }
+
+@media (max-width: 900px) { .formGrid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .formGrid { grid-template-columns: 1fr; } }

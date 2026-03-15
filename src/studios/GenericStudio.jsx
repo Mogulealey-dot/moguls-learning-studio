@@ -2,14 +2,24 @@ import { useState, useEffect } from 'react'
 import { QUOTES } from '../utils'
 import { useUserData } from '../hooks/useUserData'
 
-import GenericNavbar      from './GenericNavbar'
-import TaskTracker        from '../components/TaskTracker'
-import PomodoroTimer      from '../components/PomodoroTimer'
-import GradeCalculator    from '../components/GradeCalculator'
-import NotesApp           from '../components/NotesApp'
-import AIAssistant        from '../components/AIAssistant'
-import UploadCard         from '../components/UploadCard'
-import Footer             from '../components/Footer'
+import GenericNavbar        from './GenericNavbar'
+import TaskTracker          from '../components/TaskTracker'
+import PomodoroTimer        from '../components/PomodoroTimer'
+import GradeCalculator      from '../components/GradeCalculator'
+import NotesApp             from '../components/NotesApp'
+import AIAssistant          from '../components/AIAssistant'
+import UploadCard           from '../components/UploadCard'
+import Footer               from '../components/Footer'
+import Flashcards           from '../components/Flashcards'
+import QuizGenerator        from '../components/QuizGenerator'
+import ExamCountdown        from '../components/ExamCountdown'
+import SyllabusTracker      from '../components/SyllabusTracker'
+import StudySchedule        from '../components/StudySchedule'
+import GradeTrends          from '../components/GradeTrends'
+import ReadingList          from '../components/ReadingList'
+import MindMap              from '../components/MindMap'
+import CitationGenerator    from '../components/CitationGenerator'
+import AttendanceTracker    from '../components/AttendanceTracker'
 
 import gs from './GenericStudio.module.css'
 
@@ -151,6 +161,17 @@ export default function GenericStudio({ config, user, onLogout, onBack }) {
       <MaterialsSection prefix={storagePrefix} studioName={name} />
 
       <NotesApp storageKey={`${storagePrefix}_notes`} />
+
+      <Flashcards storageKey={`${storagePrefix}`} />
+      <QuizGenerator storageKey={`${storagePrefix}`} />
+      <ExamCountdown storageKey={`${storagePrefix}`} />
+      <SyllabusTracker storageKey={`${storagePrefix}`} />
+      <StudySchedule storageKey={`${storagePrefix}`} />
+      <GradeTrends storageKey={`${storagePrefix}`} />
+      <ReadingList storageKey={`${storagePrefix}`} />
+      <MindMap storageKey={`${storagePrefix}`} />
+      <CitationGenerator storageKey={`${storagePrefix}`} />
+      <AttendanceTracker storageKey={`${storagePrefix}`} />
 
       <AIAssistant user={user} systemPrompt={aiSystemPrompt} contextNotes={contextNotes} contextTasks={contextTasks} />
 

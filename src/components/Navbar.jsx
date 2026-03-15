@@ -64,6 +64,16 @@ const NAV_LINKS = [
   ['calculator', '🧮 Calc'],
   ['materials',  '📚 Files'],
   ['notes',      '📓 Notes'],
+  ['flashcards', '🃏 Flashcards'],
+  ['quiz',       '📝 Quiz'],
+  ['exams',      '📅 Exams'],
+  ['syllabus',   '📋 Syllabus'],
+  ['schedule',   '🗓 Schedule'],
+  ['trends',     '📈 Trends'],
+  ['reading',    '📖 Reading'],
+  ['mindmap',    '🧠 Mind Map'],
+  ['citations',  '🔖 Citations'],
+  ['attendance', '✅ Attendance'],
   ['ai',         'AI ✦'],
 ]
 

@@ -1,0 +1,68 @@
+.root { }
+
+.stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 32px; }
+.statCard { background: rgba(245,240,232,0.03); border: 1px solid rgba(201,168,76,0.15); border-radius: 4px; padding: 20px 24px; text-align: center; }
+.statNum { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 900; line-height: 1; margin-bottom: 6px; color: var(--gold); }
+.statLabel { font-size: 12px; color: var(--mist); letter-spacing: 0.05em; text-transform: uppercase; }
+
+.controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+.addBtn { background: linear-gradient(135deg, var(--emerald), var(--emerald-light)); border: none; color: var(--cream); padding: 10px 20px; border-radius: 4px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: opacity 0.2s; }
+.addBtn:hover { opacity: 0.85; }
+.studyBtn { background: linear-gradient(135deg, var(--gold), #b8942a); border: none; color: var(--ink); padding: 10px 20px; border-radius: 4px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: opacity 0.2s; }
+.studyBtn:hover { opacity: 0.85; }
+.btnRow { display: flex; gap: 10px; }
+
+.form { background: rgba(245,240,232,0.03); border: 1px solid rgba(201,168,76,0.2); border-radius: 4px; padding: 28px 32px; margin-bottom: 24px; }
+.formGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+.formFull { grid-column: 1 / -1; }
+.select { width: 100%; background: rgba(245,240,232,0.06); border: 1px solid rgba(201,168,76,0.2); border-radius: 3px; padding: 12px 16px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--cream); outline: none; }
+.select option { background: #1a1a1a; }
+.formActions { display: flex; gap: 10px; margin-top: 12px; }
+.cancelBtn { background: rgba(245,240,232,0.06); border: 1px solid rgba(245,240,232,0.15); color: var(--mist); padding: 10px 20px; border-radius: 4px; font-size: 14px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+
+.decks { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.deckCard { background: rgba(245,240,232,0.03); border: 1px solid rgba(201,168,76,0.15); border-radius: 4px; padding: 20px; cursor: pointer; transition: all 0.2s; position: relative; }
+.deckCard:hover { border-color: rgba(201,168,76,0.4); background: rgba(245,240,232,0.05); }
+.deckName { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--cream); margin-bottom: 8px; }
+.deckMeta { font-size: 13px; color: var(--mist); }
+.dueBadge { display: inline-block; background: var(--crimson); color: #fff; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; margin-left: 8px; }
+.deckDelete { position: absolute; top: 12px; right: 12px; background: none; border: none; color: rgba(138,155,176,0.4); cursor: pointer; font-size: 14px; transition: color 0.2s; }
+.deckDelete:hover { color: var(--crimson); }
+
+/* Study mode */
+.studyMode { max-width: 600px; margin: 0 auto; }
+.studyProgress { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; font-size: 13px; color: var(--mist); }
+.progressBar { height: 4px; background: rgba(245,240,232,0.07); border-radius: 2px; flex: 1; margin: 0 16px; }
+.progressFill { height: 100%; border-radius: 2px; background: var(--emerald-light); transition: width 0.3s; }
+
+.cardScene { perspective: 1000px; height: 260px; margin-bottom: 24px; cursor: pointer; }
+.cardInner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
+.cardInner.flipped { transform: rotateY(180deg); }
+.cardFace { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; border-radius: 8px; text-align: center; }
+.cardFront { background: rgba(245,240,232,0.04); border: 1px solid rgba(201,168,76,0.25); }
+.cardBack { background: rgba(42,155,110,0.08); border: 1px solid rgba(42,155,110,0.3); transform: rotateY(180deg); }
+.cardText { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--cream); line-height: 1.5; }
+.cardHint { font-size: 12px; color: var(--mist); margin-top: 16px; }
+.cardSubject { font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
+
+.ratingRow { display: flex; gap: 12px; justify-content: center; margin-bottom: 24px; }
+.ratingBtn { flex: 1; max-width: 120px; padding: 12px 8px; border-radius: 4px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: opacity 0.2s; }
+.ratingBtn:hover { opacity: 0.85; }
+.ratingAgain { background: rgba(139,31,47,0.8); color: #fff; }
+.ratingHard  { background: rgba(201,168,76,0.7); color: var(--ink); }
+.ratingGood  { background: rgba(42,155,110,0.8); color: #fff; }
+.ratingEasy  { background: rgba(74,158,202,0.8); color: #fff; }
+
+.studyDone { text-align: center; padding: 60px 20px; }
+.studyDoneIcon { font-size: 64px; margin-bottom: 16px; }
+.studyDoneTitle { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--cream); margin-bottom: 8px; }
+.studyDoneSub { font-size: 14px; color: var(--mist); }
+.backBtn { background: rgba(245,240,232,0.06); border: 1px solid rgba(245,240,232,0.15); color: var(--mist); padding: 10px 24px; border-radius: 4px; font-size: 14px; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 24px; }
+
+.empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 60px; color: var(--mist); text-align: center; opacity: 0.6; }
+
+@media (max-width: 700px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .formGrid { grid-template-columns: 1fr; }
+  .ratingRow { flex-wrap: wrap; }
+}

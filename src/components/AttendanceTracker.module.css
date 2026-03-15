@@ -1,0 +1,55 @@
+.root { }
+
+.controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+.addBtn { background: linear-gradient(135deg, var(--emerald), var(--emerald-light)); border: none; color: var(--cream); padding: 10px 20px; border-radius: 4px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: opacity 0.2s; }
+.addBtn:hover { opacity: 0.85; }
+.markTodayBtn { background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.3); color: var(--gold); padding: 10px 16px; border-radius: 4px; font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+.exportBtn { background: rgba(245,240,232,0.06); border: 1px solid rgba(245,240,232,0.15); color: var(--mist); padding: 10px 16px; border-radius: 4px; font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+
+.form { background: rgba(245,240,232,0.03); border: 1px solid rgba(201,168,76,0.2); border-radius: 4px; padding: 28px 32px; margin-bottom: 24px; }
+.formGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+.cancelBtn { background: rgba(245,240,232,0.06); border: 1px solid rgba(245,240,232,0.15); color: var(--mist); padding: 10px 20px; border-radius: 4px; font-size: 14px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+.formActions { display: flex; gap: 10px; margin-top: 16px; }
+
+.subjects { display: flex; flex-direction: column; gap: 20px; }
+.subjectBlock { background: rgba(245,240,232,0.02); border: 1px solid rgba(201,168,76,0.12); border-radius: 4px; padding: 20px; }
+.subjectHeader { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+.subjectName { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--cream); flex: 1; }
+.pctBadge { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; }
+.pctGreen { color: var(--emerald-light); }
+.pctRed { color: var(--crimson); }
+.warningBadge { font-size: 14px; title: 'Below target'; }
+.progressRow { height: 6px; background: rgba(245,240,232,0.07); border-radius: 3px; overflow: hidden; margin-bottom: 12px; }
+.progressFill { height: 100%; border-radius: 3px; transition: width 0.4s; }
+.deleteSubjectBtn { background: none; border: none; color: rgba(138,155,176,0.4); cursor: pointer; font-size: 14px; transition: color 0.2s; }
+.deleteSubjectBtn:hover { color: var(--crimson); }
+
+/* Log session */
+.logRow { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 12px; }
+.logInput { flex: 1; min-width: 120px; }
+.presentBtn { background: rgba(42,155,110,0.15); border: 1px solid rgba(42,155,110,0.3); color: var(--emerald-light); padding: 10px 14px; border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s; }
+.presentBtn:hover { background: rgba(42,155,110,0.3); }
+.absentBtn { background: rgba(139,31,47,0.12); border: 1px solid rgba(139,31,47,0.3); color: #e05c6e; padding: 10px 14px; border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s; }
+.absentBtn:hover { background: rgba(139,31,47,0.25); }
+.noteInput { flex: 2; min-width: 140px; }
+
+/* Calendar grid */
+.calTitle { font-size: 11px; color: var(--mist); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.calendar { display: flex; gap: 3px; flex-wrap: wrap; }
+.calCell { width: 16px; height: 16px; border-radius: 3px; border: 1px solid rgba(245,240,232,0.06); }
+.calPresent { background: var(--emerald-light); opacity: 0.8; }
+.calAbsent { background: var(--crimson); opacity: 0.7; }
+.calEmpty { background: rgba(245,240,232,0.04); }
+
+.sessionList { margin-top: 10px; }
+.sessionItem { display: flex; align-items: center; gap: 10px; font-size: 12px; padding: 4px 0; border-bottom: 1px solid rgba(245,240,232,0.04); color: var(--mist); }
+.sessionItem:last-child { border-bottom: none; }
+.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.dotPresent { background: var(--emerald-light); }
+.dotAbsent { background: var(--crimson); }
+.deleteSessionBtn { background: none; border: none; color: rgba(138,155,176,0.3); cursor: pointer; font-size: 11px; margin-left: auto; }
+.deleteSessionBtn:hover { color: var(--crimson); }
+
+.empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 60px; color: var(--mist); text-align: center; opacity: 0.6; }
+
+@media (max-width: 700px) { .formGrid { grid-template-columns: 1fr; } }

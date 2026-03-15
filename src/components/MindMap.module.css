@@ -1,0 +1,42 @@
+.root { }
+
+.controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+.addBtn { background: linear-gradient(135deg, var(--emerald), var(--emerald-light)); border: none; color: var(--cream); padding: 10px 20px; border-radius: 4px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: opacity 0.2s; }
+.addBtn:hover { opacity: 0.85; }
+.backBtn { background: rgba(245,240,232,0.06); border: 1px solid rgba(245,240,232,0.15); color: var(--mist); padding: 10px 20px; border-radius: 4px; font-size: 14px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+.deleteMapBtn { background: rgba(139,31,47,0.12); border: 1px solid rgba(139,31,47,0.35); color: #e05c6e; padding: 10px 16px; border-radius: 4px; font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+
+.mapList { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.mapCard { background: rgba(245,240,232,0.03); border: 1px solid rgba(201,168,76,0.15); border-radius: 4px; padding: 20px; position: relative; cursor: pointer; transition: all 0.2s; }
+.mapCard:hover { border-color: rgba(201,168,76,0.4); background: rgba(245,240,232,0.05); }
+.mapTitle { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--cream); margin-bottom: 6px; }
+.mapMeta { font-size: 13px; color: var(--mist); }
+.mapCardDelete { position: absolute; top: 12px; right: 12px; background: none; border: none; color: rgba(138,155,176,0.4); cursor: pointer; font-size: 14px; transition: color 0.2s; }
+.mapCardDelete:hover { color: var(--crimson); }
+
+/* Canvas */
+.canvasWrap { border: 1px solid rgba(201,168,76,0.15); border-radius: 4px; background: rgba(245,240,232,0.02); overflow: hidden; position: relative; user-select: none; }
+.canvas { display: block; cursor: crosshair; }
+
+.canvasHeader { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid rgba(201,168,76,0.1); font-size: 14px; color: var(--cream); flex-wrap: wrap; gap: 8px; }
+.canvasHint { font-size: 12px; color: var(--mist); }
+.canvasBtnRow { display: flex; gap: 8px; }
+.canvasMiniBtn { background: rgba(245,240,232,0.06); border: 1px solid rgba(245,240,232,0.12); color: var(--mist); padding: 5px 12px; border-radius: 3px; font-size: 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+
+/* Node editor popup */
+.nodeEditor { position: absolute; background: rgba(18,18,18,0.97); border: 1px solid rgba(201,168,76,0.35); border-radius: 6px; padding: 14px 16px; z-index: 10; min-width: 200px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
+.nodeEditorTitle { font-size: 11px; color: var(--mist); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.nodeEditorInput { width: 100%; background: rgba(245,240,232,0.06); border: 1px solid rgba(201,168,76,0.2); border-radius: 3px; padding: 8px 10px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--cream); outline: none; box-sizing: border-box; }
+.colorRow { display: flex; gap: 6px; margin-top: 8px; }
+.colorDot { width: 18px; height: 18px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: border-color 0.15s; }
+.colorDotActive { border-color: #fff; }
+.nodeEditorActions { display: flex; gap: 8px; margin-top: 10px; }
+.nodeEditorSave { background: var(--emerald); border: none; color: #fff; padding: 6px 14px; border-radius: 3px; font-size: 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+.nodeEditorDelete { background: rgba(139,31,47,0.3); border: 1px solid rgba(139,31,47,0.4); color: #e05c6e; padding: 6px 12px; border-radius: 3px; font-size: 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+.nodeEditorCancel { background: none; border: none; color: var(--mist); padding: 6px 10px; border-radius: 3px; font-size: 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+
+.empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 60px; color: var(--mist); text-align: center; opacity: 0.6; }
+
+.newMapForm { background: rgba(245,240,232,0.03); border: 1px solid rgba(201,168,76,0.2); border-radius: 4px; padding: 24px 28px; margin-bottom: 24px; display: flex; gap: 12px; flex-wrap: wrap; }
+.formActions { display: flex; gap: 10px; margin-top: 0; }
+.cancelBtn { background: rgba(245,240,232,0.06); border: 1px solid rgba(245,240,232,0.15); color: var(--mist); padding: 10px 20px; border-radius: 4px; font-size: 14px; cursor: pointer; font-family: 'DM Sans', sans-serif; }

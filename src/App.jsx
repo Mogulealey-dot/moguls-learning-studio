@@ -14,6 +14,16 @@ import TaskTracker         from './components/TaskTracker'
 import PomodoroTimer       from './components/PomodoroTimer'
 import GradeCalculator     from './components/GradeCalculator'
 import FinancialCalculator from './components/FinancialCalculator'
+import Flashcards          from './components/Flashcards'
+import QuizGenerator       from './components/QuizGenerator'
+import ExamCountdown       from './components/ExamCountdown'
+import SyllabusTracker     from './components/SyllabusTracker'
+import StudySchedule       from './components/StudySchedule'
+import GradeTrends         from './components/GradeTrends'
+import ReadingList         from './components/ReadingList'
+import MindMap             from './components/MindMap'
+import CitationGenerator   from './components/CitationGenerator'
+import AttendanceTracker   from './components/AttendanceTracker'
 
 function QuoteTicker() {
   const [qi, setQi] = useState(0)
@@ -116,6 +126,16 @@ export default function App({ user, onLogout, onBack }) {
       <FinancialCalculator />
       <MaterialsSection />
       <NotesApp />
+      <Flashcards storageKey="mls" />
+      <QuizGenerator storageKey="mls" />
+      <ExamCountdown storageKey="mls" />
+      <SyllabusTracker storageKey="mls" />
+      <StudySchedule storageKey="mls" />
+      <GradeTrends storageKey="mls" />
+      <ReadingList storageKey="mls" />
+      <MindMap storageKey="mls" />
+      <CitationGenerator storageKey="mls" />
+      <AttendanceTracker storageKey="mls" />
       <AIAssistant user={user} />
       <Footer />
     </>
