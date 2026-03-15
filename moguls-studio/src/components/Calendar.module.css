@@ -1,0 +1,44 @@
+.card {
+  background: rgba(245,240,232,0.03);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 4px; overflow: hidden; max-width: 520px;
+}
+.header {
+  background: linear-gradient(135deg, var(--emerald) 0%, var(--emerald-light) 100%);
+  padding: 28px 32px; display: flex; justify-content: space-between; align-items: center;
+}
+.monthYear {
+  font-family: 'Playfair Display', serif; font-size: 24px;
+  font-weight: 700; color: var(--cream);
+}
+.navBtn {
+  background: rgba(255,255,255,0.15); border: none; color: var(--cream);
+  width: 32px; height: 32px; border-radius: 50%; font-size: 16px;
+  cursor: pointer; transition: background 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.navBtn:hover { background: rgba(255,255,255,0.25); }
+.todayBadge {
+  background: rgba(255,255,255,0.07); padding: 8px 16px;
+  font-size: 13px; color: rgba(245,240,232,0.7); text-align: center;
+}
+.weekdays {
+  display: grid; grid-template-columns: repeat(7,1fr);
+  background: rgba(245,240,232,0.04);
+  border-bottom: 1px solid rgba(201,168,76,0.1);
+}
+.weekdays div {
+  padding: 12px; text-align: center;
+  font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--mist); font-weight: 600;
+}
+.days { display: grid; grid-template-columns: repeat(7,1fr); padding: 8px; }
+.day {
+  padding: 8px; text-align: center; font-size: 14px;
+  color: rgba(245,240,232,0.7); border-radius: 4px; cursor: pointer;
+  transition: all 0.15s; min-height: 44px;
+  display: flex; align-items: center; justify-content: center;
+}
+.day:hover:not(.empty):not(.other) { background: rgba(201,168,76,0.1); color: var(--gold); }
+.today { background: var(--gold); color: var(--ink); font-weight: 700; }
+.other { color: rgba(245,240,232,0.2); cursor: default; }

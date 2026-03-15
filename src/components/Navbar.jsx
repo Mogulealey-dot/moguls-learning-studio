@@ -67,9 +67,15 @@ const NAV_LINKS = [
   ['ai',         'AI ✦'],
 ]
 
-export default function Navbar({ user, onLogout, onBack, scrollTo, activeSection }) {
+export default function Navbar({ user, onLogout, onBack, scrollTo, activeSection, navBadges = {} }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const go = (id) => { scrollTo(id); setMenuOpen(false) }
+
+  const getBadgeClass = (id, count) => {
+    if (id === 'tasks') return styles.badgeTasks
+    if (count === '▶') return styles.badgeRunning
+    return styles.badge
+  }
 
   return (
     <>
@@ -86,16 +92,22 @@ export default function Navbar({ user, onLogout, onBack, scrollTo, activeSection
         </div>
 
         <ul className={styles.links}>
-          {NAV_LINKS.map(([id, label]) => (
-            <li key={id}>
-              <a
-                className={activeSection === id ? styles.active : ''}
-                onClick={() => scrollTo(id)}
-              >
-                {label}
-              </a>
-            </li>
-          ))}
+          {NAV_LINKS.map(([id, label]) => {
+            const count = navBadges[id]
+            return (
+              <li key={id}>
+                <a
+                  className={activeSection === id ? styles.active : ''}
+                  onClick={() => scrollTo(id)}
+                >
+                  {label}
+                  {(count > 0 || count === '▶') && (
+                    <span className={getBadgeClass(id, count)}>{count}</span>
+                  )}
+                </a>
+              </li>
+            )
+          })}
         </ul>
 
         <NavSearch scrollTo={scrollTo} />
@@ -114,15 +126,21 @@ export default function Navbar({ user, onLogout, onBack, scrollTo, activeSection
 
       {menuOpen && (
         <div className={styles.mobileMenu}>
-          {NAV_LINKS.map(([id, label]) => (
-            <div
-              key={id}
-              className={`${styles.mobileLink} ${activeSection === id ? styles.mobileLinkActive : ''}`}
-              onClick={() => go(id)}
-            >
-              {label}
-            </div>
-          ))}
+          {NAV_LINKS.map(([id, label]) => {
+            const count = navBadges[id]
+            return (
+              <div
+                key={id}
+                className={`${styles.mobileLink} ${activeSection === id ? styles.mobileLinkActive : ''}`}
+                onClick={() => go(id)}
+              >
+                {label}
+                {(count > 0 || count === '▶') && (
+                  <span className={getBadgeClass(id, count)}>{count}</span>
+                )}
+              </div>
+            )
+          })}
         </div>
       )}
     </>

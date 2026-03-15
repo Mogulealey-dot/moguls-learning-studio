@@ -1,0 +1,31 @@
+.addSubjectRow { display: flex; gap: 12px; margin-bottom: 28px; }
+.subjectInput { flex: 1; background: rgba(245,240,232,0.06); border: 1px solid rgba(201,168,76,0.2); border-radius: 3px; padding: 12px 16px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--cream); outline: none; }
+.subjectInput:focus { border-color: var(--gold); }
+.subjectInput::placeholder { color: rgba(138,155,176,0.4); }
+.addSubjectBtn { background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--ink); border: none; padding: 12px 24px; border-radius: 3px; font-size: 14px; font-weight: 700; cursor: pointer; transition: opacity 0.2s; font-family: 'DM Sans', sans-serif; white-space: nowrap; }
+.addSubjectBtn:hover { opacity: 0.85; }
+.subjectList { display: flex; flex-direction: column; gap: 24px; }
+.subjectCard { background: rgba(245,240,232,0.03); border: 1px solid rgba(201,168,76,0.15); border-radius: 6px; padding: 28px 32px; }
+.subjectHeader { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.subjectName { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--cream); }
+.removeSubject { background: none; border: 1px solid rgba(139,31,47,0.3); color: rgba(139,31,47,0.7); padding: 6px 12px; border-radius: 3px; font-size: 12px; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
+.removeSubject:hover { border-color: var(--crimson); color: var(--crimson); }
+.table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+.table th { text-align: left; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--mist); padding: 8px 12px; border-bottom: 1px solid rgba(201,168,76,0.15); }
+.table td { padding: 6px 12px; border-bottom: 1px solid rgba(245,240,232,0.04); }
+.table tfoot td { border-bottom: none; padding-top: 12px; }
+.cellInput { background: rgba(245,240,232,0.05); border: 1px solid rgba(201,168,76,0.1); border-radius: 3px; padding: 6px 10px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--cream); outline: none; width: 100%; }
+.cellInput:focus { border-color: var(--gold); }
+.cellInput::placeholder { color: rgba(138,155,176,0.3); }
+.weighted { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--gold); }
+.removeRow { background: none; border: none; color: var(--mist); cursor: pointer; font-size: 12px; transition: color 0.2s; }
+.removeRow:hover { color: var(--crimson); }
+.weightWarn { font-size: 12px; color: var(--crimson); }
+.weightOk   { font-size: 12px; color: var(--emerald-light); }
+.finalLabel { font-size: 12px; color: var(--mist); text-align: right; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+.finalScore { font-family: 'DM Mono', monospace; font-size: 16px; font-weight: 700; }
+.addRowBtn { background: rgba(201,168,76,0.08); border: 1px dashed rgba(201,168,76,0.3); color: var(--gold); padding: 8px 16px; border-radius: 3px; font-size: 13px; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif; margin-top: 4px; }
+.addRowBtn:hover { background: rgba(201,168,76,0.14); }
+.gradeResult { display: flex; align-items: center; gap: 20px; margin-top: 20px; padding: 16px 20px; background: rgba(245,240,232,0.03); border-radius: 4px; border: 1px solid rgba(201,168,76,0.1); }
+.gradeLetter { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 900; line-height: 1; }
+.gradeInfo { flex: 1; }
