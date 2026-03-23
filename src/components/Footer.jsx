@@ -1,6 +1,12 @@
 import styles from './Footer.module.css'
 
-export default function Footer() {
+const scrollTo = (id) => {
+  const el = document.getElementById(id)
+  if (el) el.scrollIntoView({ behavior: 'smooth' })
+  else window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+export default function Footer({ onLogout, onBack }) {
   return (
     <footer className={styles.footer}>
       <div className={styles.top}>
@@ -16,28 +22,28 @@ export default function Footer() {
         <div className={styles.col}>
           <h4>Navigate</h4>
           <ul>
-            <li><a>Home</a></li>
-            <li><a>Clock & Calendar</a></li>
-            <li><a>Study Materials</a></li>
-            <li><a>My Notes</a></li>
+            <li><a onClick={() => scrollTo('home')}>Home</a></li>
+            <li><a onClick={() => scrollTo('schedule')}>Schedule & Calendar</a></li>
+            <li><a onClick={() => scrollTo('materials')}>Study Materials</a></li>
+            <li><a onClick={() => scrollTo('notes')}>My Notes</a></li>
           </ul>
         </div>
         <div className={styles.col}>
           <h4>Resources</h4>
           <ul>
-            <li><a>Lecture Notes</a></li>
-            <li><a>Past Papers</a></li>
-            <li><a>Financial Calculator</a></li>
-            <li><a>AI Assistant</a></li>
+            <li><a onClick={() => scrollTo('materials')}>Lecture Notes</a></li>
+            <li><a onClick={() => scrollTo('materials')}>Past Papers</a></li>
+            <li><a onClick={() => scrollTo('tools')}>Calculator Tools</a></li>
+            <li><a onClick={() => scrollTo('ai')}>AI Assistant</a></li>
           </ul>
         </div>
         <div className={styles.col}>
           <h4>About</h4>
           <ul>
-            <li><a>My Profile</a></li>
-            <li><a>Settings</a></li>
-            <li><a>Help & FAQ</a></li>
-            <li><a>Sign Out</a></li>
+            <li><a onClick={() => onBack?.()}>← All Studios</a></li>
+            <li><a onClick={() => scrollTo('grades')}>My Grades</a></li>
+            <li><a onClick={() => scrollTo('tasks')}>My Tasks</a></li>
+            <li><a onClick={() => onLogout?.()} className={styles.signOutLink}>Sign Out</a></li>
           </ul>
         </div>
       </div>

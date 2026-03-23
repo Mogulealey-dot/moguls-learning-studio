@@ -137,7 +137,7 @@ export default function App({ user, onLogout, onBack }) {
       <CitationGenerator storageKey="mls" />
       <AttendanceTracker storageKey="mls" />
       <AIAssistant user={user} />
-      <Footer />
+      <Footer onLogout={onLogout} onBack={onBack} />
     </>
   )
 }

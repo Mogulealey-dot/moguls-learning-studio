@@ -186,7 +186,7 @@ export default function GenericStudio({ config, user, onLogout, onBack }) {
 
       <AIAssistant user={user} systemPrompt={aiSystemPrompt} contextNotes={contextNotes} contextTasks={contextTasks} />
 
-      <Footer />
+      <Footer onLogout={onLogout} onBack={onBack} />
     </div>
   )
 }
