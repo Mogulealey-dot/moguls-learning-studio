@@ -8,6 +8,16 @@ import { useUserData } from './hooks/useUserData'
 
 const STUDIOS = [
   {
+    id: 'finance_masters',
+    icon: '💹',
+    name: 'Finance Masters',
+    subtitle: 'MSc Finance — Academic Excellence',
+    desc: 'TVM, bond pricing, CAPM, WACC, valuation models, duration & convexity — plus the full Apex Study Algorithm toolkit for total exam domination.',
+    color: '#1a6b5e',
+    tags: ['TVM & Bonds', 'CAPM & WACC', 'Valuation', 'Apex Algorithm'],
+    status: 'active',
+  },
+  {
     id: 'finance',
     icon: '📊',
     name: 'Finance',
