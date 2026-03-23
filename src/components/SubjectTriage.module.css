@@ -1,0 +1,52 @@
+.subtitle { font-size: 14px; color: var(--mist); max-width: 640px; margin: 0 auto; text-align: center; margin-top: 8px; margin-bottom: 28px; }
+
+.allocBar { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; padding: 14px 20px; background: rgba(245,240,232,0.03); border: 1px solid rgba(245,240,232,0.08); border-radius: 4px; }
+.allocLabel { font-size: 12px; color: var(--mist); text-transform: uppercase; letter-spacing: 0.08em; }
+.allocPill { font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+.bucket { border-radius: 8px; padding: 24px; border: 2px solid transparent; display: flex; flex-direction: column; gap: 16px; transition: border-color 0.2s; }
+.bucketActive { outline: 2px solid var(--accent, var(--gold)); outline-offset: 2px; }
+
+.bucketRed  { background: rgba(224,92,110,0.05); border-color: rgba(224,92,110,0.2); }
+.bucketAmber { background: rgba(201,168,76,0.05); border-color: rgba(201,168,76,0.2); }
+.bucketGrey { background: rgba(245,240,232,0.02); border-color: rgba(245,240,232,0.1); }
+
+.allocPill.bucketRed   { background: rgba(224,92,110,0.12); color: #e05c6e; }
+.allocPill.bucketAmber { background: rgba(201,168,76,0.12); color: var(--gold); }
+.allocPill.bucketGrey  { background: rgba(245,240,232,0.06); color: var(--mist); }
+
+.bucketHeader { }
+.bucketAction { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.bucketTitle { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--cream); margin-bottom: 4px; }
+.bucketSubtitle { font-size: 12px; color: var(--mist); margin-bottom: 10px; }
+.bucketHint { font-size: 12px; color: var(--mist); font-style: italic; line-height: 1.5; border-top: 1px solid rgba(245,240,232,0.08); padding-top: 10px; }
+.bucketCount { font-size: 11px; color: var(--mist); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 8px; }
+
+.topicList { display: flex; flex-direction: column; gap: 8px; min-height: 48px; flex: 1; }
+.empty { font-size: 12px; color: var(--mist); font-style: italic; padding: 16px 0; text-align: center; opacity: 0.5; border: 1px dashed rgba(245,240,232,0.1); border-radius: 4px; }
+
+.topicItem { background: rgba(245,240,232,0.04); border: 1px solid rgba(245,240,232,0.1); border-radius: 4px; padding: 10px 12px; display: flex; align-items: flex-start; gap: 8px; }
+.topicContent { flex: 1; }
+.topicName { font-size: 14px; color: var(--cream); }
+.topicNotes { font-size: 11px; color: var(--mist); margin-top: 3px; font-style: italic; }
+.topicActions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.moveMenu { display: flex; align-items: center; gap: 4px; }
+.moveLabel { font-size: 10px; color: var(--mist); }
+.moveBtn { background: rgba(245,240,232,0.06); border: 1px solid rgba(245,240,232,0.15); color: var(--mist); padding: 2px 8px; border-radius: 3px; font-size: 11px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+.moveBtn:hover { color: var(--cream); }
+.removeBtn { background: none; border: none; color: rgba(138,155,176,0.4); cursor: pointer; font-size: 13px; transition: color 0.2s; }
+.removeBtn:hover { color: var(--crimson); }
+
+.addRow { }
+.addTopicBtn { background: rgba(245,240,232,0.04); border: 1px dashed rgba(245,240,232,0.15); color: var(--mist); padding: 8px 16px; border-radius: 4px; font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; width: 100%; transition: background 0.2s; }
+.addTopicBtn:hover { background: rgba(245,240,232,0.08); }
+
+.inlineForm { display: flex; flex-direction: column; gap: 8px; }
+.inlineInput { background: rgba(245,240,232,0.06); border: 1px solid rgba(245,240,232,0.15); color: var(--cream); padding: 8px 12px; border-radius: 4px; font-size: 13px; font-family: 'DM Sans', sans-serif; width: 100%; }
+.inlineInput::placeholder { color: var(--mist); opacity: 0.6; }
+.saveBtn { background: var(--emerald); border: none; color: var(--cream); padding: 7px 16px; border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+.cancelBtn { background: rgba(245,240,232,0.06); border: 1px solid rgba(245,240,232,0.15); color: var(--mist); padding: 7px 16px; border-radius: 4px; font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+
+@media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
