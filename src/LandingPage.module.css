@@ -188,6 +188,29 @@
   flex: 1;
 }
 
+.sortBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 10px 16px;
+  background: rgba(201, 168, 76, 0.05);
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  border-radius: 4px;
+}
+.sortLabel {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.8;
+}
+.sortTotal {
+  font-size: 11px;
+  color: var(--mist);
+  opacity: 0.7;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -284,17 +307,46 @@
   line-height: 1.2;
 }
 
-.visitBadge {
-  display: inline-block;
-  font-size: 10px;
+/* ── Rank badge ── */
+.rankBadge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-size: 11px;
+  font-weight: 700;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent, var(--gold));
-  border: 1px solid var(--accent, var(--gold));
-  border-radius: 20px;
-  padding: 2px 8px;
-  opacity: 0.7;
+  padding: 3px 9px;
+  border-radius: 3px;
+  border: 1px solid;
+}
+.rankGold   { background: rgba(201,168,76,0.18); color: #f0c84a; border-color: rgba(201,168,76,0.5); font-size: 15px; padding: 2px 7px; }
+.rankSilver { background: rgba(180,180,190,0.12); color: #c0c0c8; border-color: rgba(180,180,190,0.4); }
+.rankBronze { background: rgba(176,110,65,0.12); color: #cd7f4a; border-color: rgba(176,110,65,0.4); }
+.rankDefault { background: rgba(245,240,232,0.06); color: var(--mist); border-color: rgba(245,240,232,0.15); }
+
+/* ── Visit counter ── */
+.visitRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin-top: 2px;
+}
+.visitCount {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  opacity: 0.8;
+}
+.visitNum {
+  font-size: 11px;
+  color: var(--mist);
+  opacity: 0.7;
+}
+.visitNone {
+  font-size: 11px;
+  color: var(--mist);
+  opacity: 0.35;
+  letter-spacing: 0.04em;
 }
 
 .lastVisited {
