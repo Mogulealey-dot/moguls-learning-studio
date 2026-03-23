@@ -7,8 +7,9 @@
 .socialBtn:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.08); }
 .col h4 { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
 .col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-.col ul li a { font-size: 14px; color: var(--mist); cursor: pointer; transition: color 0.2s; }
+.col ul li a { font-size: 14px; color: var(--mist); cursor: pointer; transition: color 0.2s; user-select: none; }
 .col ul li a:hover { color: var(--cream); }
+.signOutLink:hover { color: #e05c6e !important; }
 .bottom { padding: 24px 60px; display: flex; align-items: center; justify-content: space-between; }
 .copy { font-size: 13px; color: rgba(138,155,176,0.5); }
 .tagline { font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px; color: rgba(201,168,76,0.5); }
