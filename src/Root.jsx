@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from './contexts/AuthContext'
 import AuthScreen    from './components/AuthScreen'
 import LandingPage   from './LandingPage'
@@ -6,9 +6,31 @@ import FinanceStudio from './App'
 import GenericStudio from './studios/GenericStudio'
 import STUDIO_CONFIGS from './studioConfigs'
 
+function studioFromPath() {
+  const match = window.location.pathname.match(/^\/studio\/([^/]+)/)
+  return match ? match[1] : null
+}
+
 export default function Root() {
   const { currentUser, logout, loading } = useAuth()
-  const [studio, setStudio] = useState(null)
+  const [studio, setStudio] = useState(studioFromPath)
+
+  // Keep studio state in sync with browser back/forward
+  useEffect(() => {
+    const onPop = () => setStudio(studioFromPath())
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
+  }, [])
+
+  const enterStudio = (id) => {
+    window.history.pushState({ studio: id }, '', `/studio/${id}`)
+    setStudio(id)
+  }
+
+  const backToLanding = () => {
+    window.history.pushState({ studio: null }, '', '/')
+    setStudio(null)
+  }
 
   if (loading) {
     return (
@@ -22,9 +44,6 @@ export default function Root() {
 
   // Normalise Firebase user → app user shape { name, email }
   const user = { name: currentUser.displayName || currentUser.email, email: currentUser.email }
-
-  const enterStudio   = (id) => setStudio(id)
-  const backToLanding = ()   => setStudio(null)
 
   if (studio === 'finance') {
     return <FinanceStudio user={user} onLogout={logout} onBack={backToLanding} />
