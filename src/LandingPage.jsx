@@ -199,6 +199,9 @@ export default function LandingPage({ user, onLogout, onEnterStudio }) {
     .sort((a, b) => (visitCounts[b.id] || 0) - (visitCounts[a.id] || 0))
   const hiddenList = STUDIOS.filter((s) => hiddenStudios.includes(s.id))
 
+  const totalVisits = Object.values(visitCounts).reduce((a, b) => a + b, 0)
+  const hasVisits = totalVisits > 0
+
   const hideStudio = (id) => setHiddenStudios((prev) => [...prev, id])
   const restoreStudio = (id) => setHiddenStudios((prev) => prev.filter((hid) => hid !== id))
 
@@ -270,8 +273,18 @@ export default function LandingPage({ user, onLogout, onEnterStudio }) {
 
       {/* ── Studio Grid ── */}
       <section className={styles.gridSection}>
+        {hasVisits && (
+          <div className={styles.sortBar}>
+            <span className={styles.sortLabel}>↕ Sorted by most visited</span>
+            <span className={styles.sortTotal}>{totalVisits} total visit{totalVisits !== 1 ? 's' : ''} across all studios</span>
+          </div>
+        )}
         <div className={styles.grid}>
-          {visibleStudios.map((s) => (
+          {visibleStudios.map((s, index) => {
+            const visits = visitCounts[s.id] || 0
+            const rank = hasVisits && visits > 0 ? index + 1 : null
+            const rankClass = rank === 1 ? styles.rankGold : rank === 2 ? styles.rankSilver : rank === 3 ? styles.rankBronze : styles.rankDefault
+            return (
             <div
               key={s.id}
               className={`${styles.card} ${s.status === 'active' ? styles.cardActive : styles.cardSoon}`}
@@ -286,18 +299,34 @@ export default function LandingPage({ user, onLogout, onEnterStudio }) {
                 ✕
               </button>
 
-              {s.status === 'soon' && (
+              {/* Rank badge */}
+              {rank && (
+                <div className={`${styles.rankBadge} ${rankClass}`}>
+                  {rank === 1 ? '👑' : `#${rank}`}
+                </div>
+              )}
+
+              {s.status === 'soon' && !rank && (
                 <div className={styles.soonBadge}>Coming Soon</div>
               )}
-              {s.status === 'active' && (
+              {s.status === 'active' && !rank && (
                 <div className={styles.activeBadge}>Available Now</div>
               )}
 
               <div className={styles.cardIcon}>{s.icon}</div>
               <h3 className={styles.cardName}>{s.name}</h3>
-              {visitCounts[s.id] > 0 && (
-                <span className={styles.visitBadge}>{visitCounts[s.id]} visit{visitCounts[s.id] !== 1 ? 's' : ''}</span>
+
+              {visits > 0 ? (
+                <div className={styles.visitRow}>
+                  <span className={styles.visitCount} style={{ color: s.color }}>
+                    {'▮'.repeat(Math.min(visits, 8))}{'▯'.repeat(Math.max(0, 8 - Math.min(visits, 8)))}
+                  </span>
+                  <span className={styles.visitNum}>{visits} visit{visits !== 1 ? 's' : ''}</span>
+                </div>
+              ) : (
+                <span className={styles.visitNone}>Not yet visited</span>
               )}
+
               {lastVisited[s.id] && (
                 <span className={styles.lastVisited}>🕐 {timeAgo(lastVisited[s.id])}</span>
               )}
@@ -322,7 +351,8 @@ export default function LandingPage({ user, onLogout, onEnterStudio }) {
                 <div className={styles.notifyBtn}>Notify Me</div>
               )}
             </div>
-          ))}
+          )})}
+
 
           {/* Add Studio card — only shown when studios are hidden */}
           {hiddenList.length > 0 && (
